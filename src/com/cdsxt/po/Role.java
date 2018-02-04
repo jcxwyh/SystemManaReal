@@ -17,6 +17,7 @@ public class Role {
 	@Id
 	@SequenceGenerator(name="roleGen",sequenceName = "seq_system_role")
 	@GeneratedValue(generator = "roleGen")
+	@Column(name="role_id")
 	private Integer roleId;
 
 	@Column(unique = true)

@@ -18,6 +18,7 @@ public class Resource {
 	@Id
 	@SequenceGenerator(name="resourceGen",sequenceName = "seq_system_resource")
 	@GeneratedValue(generator = "resourceGen")
+	@Column(name="res_id")
 	private Integer resId;
 	private String rname;
 	private String title;

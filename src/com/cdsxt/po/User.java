@@ -17,6 +17,7 @@ public class User {
 	@Id
 	@SequenceGenerator(name="userGen",sequenceName = "seq_system_user")
 	@GeneratedValue(generator = "userGen")
+	@Column(name="user_id")
 	private Integer userId;
 	@Column(unique = true)
 	private String uname;
