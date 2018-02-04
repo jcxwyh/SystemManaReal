@@ -60,8 +60,8 @@
                                             <td>${dept.cname}</td>
                                             <td>${dept.cdesc}</td>
                                             <td>
-                                                <button type="button" class="btn btn-warning btn-sm dept-edit" data-deptno="${dept.deptno}">修改</button>
-                                                <button type="button" class="btn btn-danger btn-sm dept-delete" data-deptno="${dept.deptno}">删除</button>
+                                                <button type="button" class="btn btn-warning btn-xs dept-edit" data-deptno="${dept.deptno}">修改</button>
+                                                <button type="button" class="btn btn-danger btn-xs dept-delete" data-deptno="${dept.deptno}">删除</button>
                                             </td>
                                         </tr>
                                     </c:forEach>

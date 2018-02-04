@@ -25,7 +25,7 @@
 			  <a href="dept" class="list-group-item">部门管理</a>
 			  <a href="user" class="list-group-item">用户管理</a>
 			  <a href="#" class="list-group-item">菜单管理</a>
-			  <a href="#" class="list-group-item">角色管理</a>
+			  <a href="role" class="list-group-item">角色管理</a>
 			  <a href="#" class="list-group-item">权限管理</a>
 		  </div>
 		</div>

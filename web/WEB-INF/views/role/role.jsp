@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>用户管理</title>
+    <title>角色管理</title>
     <base href="<%=basePath%>" >
     <link rel="stylesheet"  href="assets/css/bootstrap.css" />
     <link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
@@ -27,40 +27,37 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <strong>用户列表</strong>
-                        <button type="button" class="btn btn-success pull-right user-add-btn" style="margin-top:-8px" data-href="user/add">添加用户</button>
+                        <strong>角色列表</strong>
+                        <button type="button" class="btn btn-success pull-right role-add-btn" style="margin-top:-8px" data-href="role/add">添加角色</button>
                     </h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>用户编号</th>
-                                <th>用户姓名</th>
-                                <th>性别</th>
-                                <th>邮箱</th>
+                                <th>角色编号</th>
+                                <th>角色名称</th>
+                                <th>constant</th>
                                 <th>状态</th>
                                 <th>描述</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        <tbody class="user-tbody">
+                        <tbody class="role-tbody">
                             <c:choose>
-                                <c:when test="${users.size()>0}">
-                                    <c:forEach items="${users}" var="user">
+                                <c:when test="${roles.size()>0}">
+                                    <c:forEach items="${roles}" var="role">
                                         <tr>
-                                            <td>${user.userId}</td>
-                                            <td>${user.uname}</td>
-                                            <td>${user.gender==1?"男":"女"}</td>
-                                            <td>${user.email}</td>
+                                            <td>${role.roleId}</td>
+                                            <td>${role.rname}</td>
+                                            <td>${role.constant}</td>
                                             <td>
-                                                <span class="label ${user.locked==1?'label-primary':'label-warning'}">${user.locked==1?'解锁':'锁定'}</span>
-                                                <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
+                                                <span class="label ${role.enabled==1?'label-success':'label-danger'}">${role.enabled==1?'启用':'禁用'}</span>
                                             </td>
-                                            <td>${user.description}</td>
+                                            <td>${role.description}</td>
                                             <td>
-                                                <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
-                                                <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
+                                                <button type="button" class="btn btn-warning btn-xs role-edit" data-roleid="${role.roleId}">修改</button>
+                                                <button type="button" class="btn btn-danger btn-xs role-delete" data-roleid="${role.roleId}">删除</button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -104,15 +101,15 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script>
-    $(".user-add-btn").on("click",function(){
+    $(".role-add-btn").on("click",function(){
        location=$(this).data("href");
     });
 
-    $(".user-tbody").on("click",".user-edit",function(){
-        location="user/update/"+$(this).data("userid");
+    $(".role-tbody").on("click",".role-edit",function(){
+        location="role/update/"+$(this).data("roleid");
     });
-    $(".user-tbody").on("click",".user-delete",function(){
-        location="user/delete/"+$(this).data("userid");
+    $(".role-tbody").on("click",".role-delete",function(){
+        location="role/delete/"+$(this).data("roleid");
     });
 </script>
 </html>
