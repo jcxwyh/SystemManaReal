@@ -16,6 +16,7 @@ import java.util.Set;
 public class Role {
 	@Id
 	@SequenceGenerator(name="roleGen",sequenceName = "seq_system_role")
+	@GeneratedValue(generator = "roleGen")
 	private Integer roleId;
 
 	@Column(unique = true)
