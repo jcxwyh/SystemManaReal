@@ -12,4 +12,9 @@ public class SystemManageController {
 	public String system() {
 		return "welcome";
 	}
+
+	@RequestMapping("company")
+	public String company(){
+		return "company/company";
+	}
 }

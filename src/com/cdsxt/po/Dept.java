@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +20,7 @@ import java.util.Set;
 @Table(name="sys_dept")
 public class Dept {
 	@Id
-	@SequenceGenerator(name="deptGen",sequenceName = "seq_system_dept")
+	@GenericGenerator(name="deptGen",strategy = "identity")
 	@GeneratedValue(generator = "deptGen")
 	private Integer deptno;
 
@@ -78,6 +80,12 @@ public class Dept {
 	public void setUers(Set<User> uers) {
 		this.uers = uers;
 	}
-	
-	
+
+	public Dept(){
+
+	}
+	public Dept(Integer deptno,String dname){
+		this.deptno = deptno;
+		this.dname = dname;
+	}
 }

@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +18,7 @@ import java.util.Set;
 @Table(name="sys_resource")
 public class Resource {
 	@Id
-	@SequenceGenerator(name="resourceGen",sequenceName = "seq_system_resource")
+	@GenericGenerator(name="resourceGen",strategy = "identity")
 	@GeneratedValue(generator = "resourceGen")
 	@Column(name="res_id")
 	private Integer resId;
@@ -25,8 +27,7 @@ public class Resource {
 	@Column(unique = true)
 	private String href;
 	private String target;
-	private String constant;
-	
+
 	private Byte shown;
 	private Byte enabled;
 	private Byte type;
@@ -79,14 +80,6 @@ public class Resource {
 
 	public void setTarget(String target) {
 		this.target = target;
-	}
-
-	public String getConstant() {
-		return constant;
-	}
-
-	public void setConstant(String constant) {
-		this.constant = constant;
 	}
 
 	public Byte getShown() {

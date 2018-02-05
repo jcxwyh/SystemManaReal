@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Table(name="sys_user")
 public class User {
 	@Id
-	@SequenceGenerator(name="userGen",sequenceName = "seq_system_user")
+	@GenericGenerator(name="userGen",strategy = "identity")
 	@GeneratedValue(generator = "userGen")
 	@Column(name="user_id")
 	private Integer userId;

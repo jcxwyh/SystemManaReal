@@ -13,5 +13,7 @@ public interface DeptService {
 
     void update(Dept dept);
 
-    void delete(Integer deptno);
+    void delete(Integer deptno,Integer mode);
+
+    List<Dept> deptList();
 }

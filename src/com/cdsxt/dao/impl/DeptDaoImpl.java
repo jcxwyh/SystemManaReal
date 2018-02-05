@@ -3,9 +3,13 @@ package com.cdsxt.dao.impl;
 import com.cdsxt.base.SessionBaseDao;
 import com.cdsxt.dao.DeptDao;
 import com.cdsxt.po.Dept;
+import com.cdsxt.po.User;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Repository
 public class DeptDaoImpl extends SessionBaseDao implements DeptDao{
@@ -31,8 +35,26 @@ public class DeptDaoImpl extends SessionBaseDao implements DeptDao{
 
     @Override
     public void delete(Integer deptno) {
-        Dept dept = new Dept();
-        dept.setDeptno(deptno);
-        this.getSession().delete(dept);
+        Session session = this.getSession();
+        Dept dept = (Dept) session.get(Dept.class,deptno);
+        Set<User> users = dept.getUers();
+        if(Objects.nonNull(users)&&!users.isEmpty())
+            users.forEach(user->user.setDept(null));
+        session.delete(dept);
+    }
+
+    @Override
+    public List<Dept> deptList() {
+        return this.getSession().createQuery("select new Dept(d.deptno as deptno,d.dname as dname) from Dept d").list();
+    }
+
+    @Override
+    public void deleteAll(Integer deptno) {
+        Session session = this.getSession();
+        Dept dept = (Dept) session.get(Dept.class,deptno);
+        Set<User> users = dept.getUers();
+        if(Objects.nonNull(users)&&!users.isEmpty())
+            users.forEach(user->session.delete(user));
+        session.delete(dept);
     }
 }

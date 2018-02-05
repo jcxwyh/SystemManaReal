@@ -2,6 +2,7 @@ package com.cdsxt.service;
 
 import com.cdsxt.po.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface UserService {
@@ -14,4 +15,8 @@ public interface UserService {
     void delete(Integer userId);
 
     void update(User user);
+
+    void changePwd(Integer userId, String password);
+
+    void assignRoles(Integer userId, ArrayList<Integer> roleIds);
 }

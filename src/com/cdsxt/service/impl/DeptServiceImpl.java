@@ -40,7 +40,19 @@ public class DeptServiceImpl implements DeptService{
 
     @Override
     @Transactional(readOnly = false,rollbackFor = Throwable.class)
-    public void delete(Integer deptno) {
-        this.deptDao.delete(deptno);
+    public void delete(Integer deptno,Integer mode) {
+        if(mode==0||mode==1){
+            //级联删除
+            this.deptDao.deleteAll(deptno);
+        }else if(mode==2){
+            //外键置空
+            this.deptDao.delete(deptno);
+        }
+
+    }
+
+    @Override
+    public List<Dept> deptList() {
+        return this.deptDao.deptList();
     }
 }

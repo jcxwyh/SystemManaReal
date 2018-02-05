@@ -14,4 +14,8 @@ public interface DeptDao {
     void update(Dept dept);
 
     void delete(Integer deptno);
+
+    List<Dept> deptList();
+
+    void deleteAll(Integer deptno);
 }

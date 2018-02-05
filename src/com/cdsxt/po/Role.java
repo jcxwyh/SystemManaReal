@@ -1,5 +1,7 @@
 package com.cdsxt.po;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +17,7 @@ import java.util.Set;
 @Table(name="sys_role")
 public class Role {
 	@Id
-	@SequenceGenerator(name="roleGen",sequenceName = "seq_system_role")
+	@GenericGenerator(name="roleGen",strategy = "identity")
 	@GeneratedValue(generator = "roleGen")
 	@Column(name="role_id")
 	private Integer roleId;

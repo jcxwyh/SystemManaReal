@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,5 +43,17 @@ public class UserServiceImpl implements UserService{
     @Transactional(readOnly = false,rollbackFor = Throwable.class)
     public void update(User user) {
         this.userDao.update(user);
+    }
+
+    @Override
+    @Transactional(readOnly = false,rollbackFor = Throwable.class)
+    public void changePwd(Integer userId, String password) {
+        this.userDao.changePwd(userId,password);
+    }
+
+    @Override
+    @Transactional(readOnly = false,rollbackFor = Throwable.class)
+    public void assignRoles(Integer userId, ArrayList<Integer> roleIds) {
+        this.userDao.assignRoles(userId,roleIds);
     }
 }

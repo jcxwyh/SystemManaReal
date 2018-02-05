@@ -35,6 +35,14 @@ public class LoginController {
 		return "login";
 	}
 
+	@RequestMapping(value="logout",method = RequestMethod.GET	)
+	public ModelAndView logout(ModelAndView modelAndView,HttpServletRequest request){
+		request.getSession().removeAttribute("loginUser");
+		modelAndView.addObject("message","已安全退出！");
+		modelAndView.setViewName("login");
+		return modelAndView;
+	}
+
 
 
 }

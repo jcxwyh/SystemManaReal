@@ -17,10 +17,10 @@
 	
 	<!-- 配置DataSource -->
 	<bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource">
-		<property name="driverClass"  value="${odbc_driver}"></property>
-		<property name="jdbcUrl" value="${odbc_url}"></property>
-		<property name="user" value="${odbc_user}"></property>
-		<property name="password" value="${odbc_pwd}"></property>
+		<property name="driverClass"  value="${jdbc_driver}"></property>
+		<property name="jdbcUrl" value="${jdbc_url}"></property>
+		<property name="user" value="${jdbc_user}"></property>
+		<property name="password" value="${jdbc_pwd}"></property>
 	</bean>
 	
 	<!-- 配置SessionFactory -->
