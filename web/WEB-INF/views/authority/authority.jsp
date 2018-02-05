@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>菜单管理</title>
+    <title>权限管理</title>
     <base href="<%=basePath%>" >
     <link rel="stylesheet"  href="assets/css/bootstrap.css" />
     <link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
@@ -27,38 +27,37 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <strong>菜单列表</strong>
-                        <%--<button type="button" class="btn btn-success pull-right menu-add-btn" style="margin-top:-8px" data-href="menu/add">添加菜单</button>--%>
+                        <strong>权限列表</strong>
+                        <%--<button type="button" class="btn btn-success pull-right authority-add-btn" style="margin-top:-8px" data-href="authority/add">添加权限</button>--%>
                     </h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>菜单编号</th>
-                                <th>菜单名称</th>
-                                <th>菜单标题</th>
-                                <th>菜单目的</th>
-                                <th>状态</th>
-                                <%--<th>操作</th>--%>
+                                <th>权限编号</th>
+                                <th>权限名称</th>
+                                <th>权限标题</th>
+                                <th>权限目的</th>
+                                <th>权限状态</th>
                             </tr>
                         </thead>
-                        <tbody class="menu-tbody">
+                        <tbody class="authority-tbody">
                             <c:choose>
-                                <c:when test="${menus.size()>0}">
-                                    <c:forEach items="${menus}" var="menu">
+                                <c:when test="${authorities.size()>0}">
+                                    <c:forEach items="${authorities}" var="authority">
                                         <tr>
-                                            <td>${menu.resId}</td>
-                                            <td>${menu.rname}</td>
-                                            <td>${menu.title}</td>
-                                            <td>${menu.target}</td>
+                                            <td>${authority.resId}</td>
+                                            <td>${authority.rname}</td>
+                                            <td>${authority.title}</td>
+                                            <td>${authority.target}</td>
                                             <td>
-                                                <span class="label ${menu.shown==1?'label-primary':'label-warning'}">${menu.shown==1?'解锁':'锁定'}</span>
-                                                <span class="label ${menu.enabled==1?'label-success':'label-danger'}">${menu.enabled==1?'启用':'禁用'}</span>
+                                                <span class="label ${authority.shown==1?'label-primary':'label-warning'}">${authority.shown==1?'显示':'隐藏'}</span>
+                                                <span class="label ${authority.enabled==1?'label-success':'label-danger'}">${authority.enabled==1?'启用':'禁用'}</span>
                                             </td>
                                             <%--<td>--%>
-                                                <%--<button type="button" class="btn btn-warning btn-xs menu-edit" data-resid="${menu.resId}">修改</button>--%>
-                                                <%--<button type="button" class="btn btn-danger btn-xs menu-delete" data-resid="${menu.resId}">删除</button>--%>
+                                                <%--<button type="button" class="btn btn-warning btn-xs authority-edit" data-resid="${authority.resId}">修改</button>--%>
+                                                <%--<button type="button" class="btn btn-danger btn-xs authority-delete" data-resid="${authority.resId}">删除</button>--%>
                                             <%--</td>--%>
                                         </tr>
                                     </c:forEach>
@@ -102,15 +101,15 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script>
-    $(".menu-add-btn").on("click",function(){
+    $(".authority-add-btn").on("click",function(){
        location=$(this).data("href");
     });
 
-    // $(".menu-tbody").on("click",".menu-edit",function(){
-    //     location="menu/update/"+$(this).data("resid");
+    // $(".authority-tbody").on("click",".authority-edit",function(){
+    //     location="authority/update/"+$(this).data("resid");
     // });
-    // $(".menu-tbody").on("click",".menu-delete",function(){
-    //     location="menu/delete/"+$(this).data("resid");
+    // $(".authority-tbody").on("click",".authority-delete",function(){
+    //     location="authority/delete/"+$(this).data("resid");
     // });
 </script>
 </html>

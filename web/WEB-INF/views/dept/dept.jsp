@@ -12,12 +12,6 @@
     <base href="<%=basePath%>" >
     <link rel="stylesheet"  href="assets/css/bootstrap.css" />
     <link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
-    <style>
-        .navbar-brand{
-            cursor:pointer;
-        }
-    </style>
-
 </head>
 <body>
 
@@ -55,7 +49,7 @@
                                     <c:forEach items="${depts}" var="dept">
                                         <tr>
                                             <td>${dept.deptno}</td>
-                                            <td>${dept.dname}</td>
+                                            <td><button class="btn btn-xs btn-link show-emp">${dept.dname}</button></td>
                                             <td>${dept.ddesc}</td>
                                             <td>${dept.cname}</td>
                                             <td>${dept.cdesc}</td>
@@ -100,6 +94,26 @@
         </div>
     </div>
 </div>
+
+<!-- 删除选择方式 -->
+<div class="modal fade" id="del-dept-model" tabindex="-1" role="dialog" aria-labelledby="model1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="model1">删除确认</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary del-confirm" >确认删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <jsp:include page="../component/footer.jsp"></jsp:include>
 </body>
 <script src="assets/js/jquery-1.12.3.js"></script>
@@ -113,7 +127,28 @@
         location="dept/update/"+$(this).data("deptno");
     });
     $(".dept-tbody").on("click",".dept-delete",function(){
-        location="dept/delete/"+$(this).data("deptno");
+        var deptno = $(this).data("deptno");
+        $.ajax({
+            url:"dept/valiUser",
+            data:"deptno="+deptno,
+            type:"post",
+            async:false,
+            success:function(res){
+                console.log(res);
+                $("#del-dept-model").modal("toggle");
+                $("#del-dept-model .modal-body").empty();
+                $(".del-confirm").data("deptno",deptno);
+                if(res){
+                    $("#del-dept-model .modal-body").append("<h4>此部门中还有员工数据！请选择删除模式：</h4><input type='radio' value='1' name='mode' checked>级联删除&nbsp;<input type='radio' name='mode' value='2'>外键置空");
+                }else{
+                    $("#del-dept-model .modal-body").append("<h4>此部门中没有员工，是否直接删除?</h4><input type='radio' value='0' checked style='display:none'>");
+                }
+            }
+        });
+    });
+    $(".del-confirm").on("click",function(){
+        //alert("dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val());
+        location="dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val();
     });
 </script>
 </html>

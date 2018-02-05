@@ -51,7 +51,7 @@
                                     <label class="col-sm-2 control-label">启用</label>
                                     <div class="col-sm-10">
                                         <label class="radio-inline">
-                                            <input type="radio" name="enabled" id="enabled1" value="1"> 启用
+                                            <input type="radio" name="enabled" id="enabled1" value="1" checked> 启用
                                         </label>
                                         <label class="radio-inline">
                                             <input type="radio" name="enabled" id="enabled2" value="0"> 禁用

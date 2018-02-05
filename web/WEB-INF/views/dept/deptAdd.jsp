@@ -12,12 +12,6 @@
     <base href="<%=basePath%>" >
     <link rel="stylesheet"  href="assets/css/bootstrap.css" />
     <link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
-    <style>
-        .navbar-brand{
-            cursor:pointer;
-        }
-    </style>
-
 </head>
 <body>
 
@@ -43,7 +37,7 @@
                             <form action="dept/add" method="post" >
                                 <div class="form-group">
                                     <label for="dname">部门名称</label>
-                                    <input type="email" class="form-control" name="dname" id="dname" placeholder="部门名称">
+                                    <input type="text" class="form-control" name="dname" id="dname" placeholder="部门名称">
                                 </div>
                                 <div class="form-group">
                                     <label for="ddesc">部门描述</label>
@@ -53,7 +47,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="cname">公司名称</label>
-                                    <input type="email" class="form-control" name="cname" id="cname" placeholder="公司名称">
+                                    <input type="text" class="form-control" name="cname" id="cname" placeholder="公司名称">
                                 </div>
                                 <div class="form-group">
                                     <label for="cdesc">公司描述</label>

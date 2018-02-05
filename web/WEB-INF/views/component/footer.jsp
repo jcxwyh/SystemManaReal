@@ -13,7 +13,7 @@
 		<link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
 	</head>
 	<body>
-		<footer class="footer navbar-fixed-bottom text-center">Power By <strong><a href="http://e.cd-sxt.com/">CDSXT</a></strong> <span class="iconfont icon-zuojiantou"></span><span class="show-date"></span><span class="iconfont icon-youjiantou"></span></footer>
+		<footer class="footer navbar-fixed-bottom text-center" >Power By <strong><a href="http://e.cd-sxt.com/">CDSXT</a></strong> <span class="iconfont icon-zuojiantou"></span><span class="show-date"></span><span class="iconfont icon-youjiantou"></span></footer>
 		
 	</body>
 	<script src="assets/js/jquery-1.12.3.js"></script>

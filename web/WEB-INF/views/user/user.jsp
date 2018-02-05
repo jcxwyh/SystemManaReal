@@ -41,6 +41,7 @@
                                 <th>邮箱</th>
                                 <th>状态</th>
                                 <th>描述</th>
+                                <th>所属部门</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
@@ -58,7 +59,9 @@
                                                 <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
                                             </td>
                                             <td>${user.description}</td>
+                                            <td>${user.dept==null?"无":user.dept.dname}</td>
                                             <td>
+                                                <button type="button" class="btn btn-info btn-xs user-role" data-userid="${user.userId}">分配角色</button>
                                                 <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
                                                 <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
                                             </td>
@@ -99,6 +102,33 @@
         </div>
     </div>
 </div>
+
+
+<!-- 显示分配角色的模态框 -->
+<div class="modal fade" id="assign-role" tabindex="-1" role="dialog" aria-labelledby="assign-role-modal">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="assign-role-modal">分配角色</h4>
+            </div>
+            <div class="modal-body">
+                <!-- 填充角色列表 ztree实现-->
+                <form>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary assign-role-btn">分配</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 显示该用户所拥有菜单及权限的模态框 -->
+
+
 <jsp:include page="../component/footer.jsp"></jsp:include>
 </body>
 <script src="assets/js/jquery-1.12.3.js"></script>
@@ -113,6 +143,43 @@
     });
     $(".user-tbody").on("click",".user-delete",function(){
         location="user/delete/"+$(this).data("userid");
+    });
+
+    $(".user-tbody").on("click",".user-role",function(){
+        //弹出角色列表共选择
+        $("#assign-role").modal("toggle");
+        var userId = $(this).data("userid");
+        $("#assign-role").find("form").empty();
+        $.ajax({
+            url:"user/getRoles",
+            dataType:"json",
+            success:function(res){
+                if($.type(res)!=="array"||res.length){
+                    $.each(res,function(i,o){
+                        var flag = false;
+                        $.each(o.users,function(j,p){
+                            if(p.userId===userId){
+                                flag=true;
+                            }
+                        })
+                        $("#assign-role").find("form").append("<div class=\"checkbox\"><label><input type=\"checkbox\" name='roleIds' value='"+o.roleId+"' "+(flag?"checked":"")+">" +
+                                o.rname + "</label></div>");
+                    });
+                }else{
+                    $("#assign-role").find("form").append("<span>暂无角色</span>");
+                }
+            }
+        });
+    });
+
+    $(".assign-role-btn").on("click",function(){
+        $.ajax({
+            url:"user/assign/",
+            data:$("#assign-role").find("form").serialize(),
+            success:function(res){
+                $("#assign-role").modal("toggle");
+            }
+        });
     });
 </script>
 </html>

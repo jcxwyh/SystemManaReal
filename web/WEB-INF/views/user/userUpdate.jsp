@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <label for="userId" class="col-sm-2 control-label">编号</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" value="${user.userId}" name="userId" id="userId" placeholder="请输入用户编号">
+                                        <input type="text" class="form-control" value="${user.userId}" name="userId" id="userId" readonly placeholder="请输入用户编号">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                     <label for="password" class="col-sm-2 control-label">密码</label>
                                     <div class="col-sm-10">
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
+                                        <input type="password" class="form-control" name="password" value="${user.password}" id="password" placeholder="请输入密码">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -98,6 +98,14 @@
                                         <textarea class="form-control" name="description" rows="2">${user.description}</textarea>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="dept" class="col-sm-2 control-label">部门</label>
+                                    <div class="col-sm-10">
+                                        <select name="dept.deptno" id="dept" class="form-control">
+                                            <option value="0">-请选择部门-</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -135,6 +143,18 @@
 
     $(".user-reset").on("click",function(){
         $("form").get(0).reset();
+    });
+
+    $.ajax({
+        url:"dept/deptList",
+        dataType:"json",
+        type:"get",
+        success:function(res){
+            $.each(res,function(i,o){
+                var currentDept = ${user.dept==null?0:user.dept.deptno}
+                $("#dept").append("<option value='"+o.deptno+"' "+(o.deptno===currentDept?"selected":"")+" >"+o.dname+"</option>");
+            });
+        }
     });
 </script>
 </html>

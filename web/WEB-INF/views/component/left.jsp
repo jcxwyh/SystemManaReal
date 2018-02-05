@@ -21,12 +21,12 @@
 			  <a href="system" class="list-group-item">
 			    <span class=" glyphicon glyphicon-home"></span> 首页
 			  </a>
-			  <a href="#" class="list-group-item">公司管理</a>
+			  <a href="system/company" class="list-group-item">公司管理</a>
 			  <a href="dept" class="list-group-item">部门管理</a>
 			  <a href="user" class="list-group-item">用户管理</a>
-			  <a href="#" class="list-group-item">菜单管理</a>
+			  <a href="menu" class="list-group-item">菜单管理</a>
 			  <a href="role" class="list-group-item">角色管理</a>
-			  <a href="#" class="list-group-item">权限管理</a>
+			  <a href="authority" class="list-group-item">权限管理</a>
 		  </div>
 		</div>
 	</body>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -45,15 +46,15 @@
 		</style>
 	</head>
 	<body class="login-body">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-2 col-md-offset-10 "  style="font-size:16px;font-family:'幼圆''; ">
-					<div class="pull-right" style="margin-top:0.5em;margin-right:0.2em">
-						<strong><a>中文</a></strong> | <strong><a>English</a></strong>
-					</div>
-				</div>
-			</div>
-		</div>
+		<%--<div class="container-fluid">--%>
+			<%--<div class="row">--%>
+				<%--<div class="col-md-2 col-md-offset-10 "  style="font-size:16px;font-family:'幼圆''; ">--%>
+					<%--<div class="pull-right" style="margin-top:0.5em;margin-right:0.2em">--%>
+						<%--<strong><a>中文</a></strong> | <strong><a>English</a></strong>--%>
+					<%--</div>--%>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</div>--%>
 		
 		<div class="container">
 			<div class="row">
@@ -76,11 +77,19 @@
 											    	<span class="iconfont icon-suo form-control-feedback"  style="font-size:16px;"></span>
 											        <input type="password" class="form-control"  name="password" id="password" placeholder="请输入密码"  style="font-size:16px;line-height:1.8em;border-radius:1em;">
 											  </div>
+
 											  <div class="form-group">
 											    <div>
 											      <button type="submit"  class="btn btn-success btn-block" style="font-size:18px;line-height:1.4em;border-radius:1.2em;">登录</button>
 											    </div>
 											  </div>
+												<c:if test="${message != null}">
+													<div class="alert alert-danger alert-dismissible" role="alert" style="border-radius:3em;padding:0.5em 1em">
+														<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-right:0.8em"><span aria-hidden="true">&times;</span></button>
+															${message}
+													</div>
+												</c:if>
+
 											</form>
 										</div>
 									</div>

@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>用户添加</title>
+    <title>角色分配</title>
     <base href="<%=basePath%>" >
     <link rel="stylesheet"  href="assets/css/bootstrap.css" />
     <link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
@@ -27,8 +27,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <strong>添加用户</strong>
-                        <button type="button" class="btn btn-danger user-add-cancel pull-right" style="margin-top: -8px">取消</button>
+                        <strong>角色分配</strong>
+                        <button type="button" class="btn btn-danger assign-role-cancel pull-right" style="margin-top: -8px">取消</button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -127,7 +127,7 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script>
-    $(".user-add-cancel").on("click",function () {
+    $(".assign-role-cancel").on("click",function () {
        location="user";
     });
 
