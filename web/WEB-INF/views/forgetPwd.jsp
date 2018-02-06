@@ -8,17 +8,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>系统管理登录</title>
+		<title>忘记密码</title>
 		<base href="<%=basePath%>" >
 		<link  rel="stylesheet"  href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
 		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<style>
-			.login-body{
-				background-image:url("assets/img/login-bg.jpg");
-				background-size:cover;
-			}
 			.panel-body{
 				padding:0;
 				margin-top:4%;
@@ -45,7 +41,7 @@
 			}
 		</style>
 	</head>
-	<body class="login-body">
+	<body>
 		<%--<div class="container-fluid">--%>
 			<%--<div class="row">--%>
 				<%--<div class="col-md-2 col-md-offset-10 "  style="font-size:16px;font-family:'幼圆''; ">--%>
@@ -60,30 +56,38 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3" >
 					<div class="row"  style="margin-top:27%">
-						<div class="col-md-8 col-md-offset-2"  style="overflow:visible">
+						<div class="col-md-10 col-md-offset-1"  style="overflow:visible">
 							 
 								<div class="panel panel-default" >
-								  <div class="panel-heading text-center"><span style="font-size:20px;font-weight:bold">系统管理登录</span></div>
+								  <div class="panel-heading text-center"><span style="font-size:20px;font-weight:bold">忘记密码</span></div>
 								  <div class="panel-body">
-							  		<!-- 登录表单FORM -->
+							  		<!-- 修改密码 -->
 									<div class="row login-bg-fill">
 										<div class="col-md-10 col-md-offset-1">
-											<form action="login"  method="post">
-											  <div class="form-group has-feedback">
-													<span class="iconfont icon-yonghu form-control-feedback"  style="font-size:16px;"></span>						    	
-											        <input type="text" class="form-control"  name="uname" id="uname" placeholder="请输入用户名"  style="font-size:16px;line-height:1.8em;border-radius:1em;">
+											<form action="user/forgetPwd" method="post">
+											  <div class="form-group">
+												  <div class="input-group">
+													  <input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱">
+													  <span class="input-group-btn">
+														<button class="btn btn-default get-vali-code" type="button">获取验证码</button>
+													  </span>
+												  </div>
+
 											  </div>
-											  <div class="form-group has-feedback">
-											    	<span class="iconfont icon-suo form-control-feedback"  style="font-size:16px;"></span>
-											        <input type="password" class="form-control"  name="password" id="password" placeholder="请输入密码"  style="font-size:16px;line-height:1.8em;border-radius:1em;">
+											  <div class="form-group">
+											        <input type="text" class="form-control"  name="valiCode" id="valiCode" placeholder="请输入验证码" >
+												    <span class="help-block vali-code" style="color:red"></span>
 											  </div>
 												<div class="form-group">
-													<button type="button" class="btn btn-link btn-info forget-pwd" style="margin:0 0 0 0.8em;padding:0">忘记密码?</button>
+													<input type="password" class="form-control"  name="password" id="password" placeholder="请输入密码" >
+													<span class="help-block vali-pwd" style="color:red"></span>
 												</div>
-
+												<div class="form-group">
+													<input type="password" class="form-control" id="vali-password" placeholder="请重复输入密码" >
+												</div>
 											  <div class="form-group">
 											    <div>
-											      <button type="submit"  class="btn btn-success btn-block" style="font-size:18px;line-height:1.4em;border-radius:1.2em;">登录</button>
+											      <button type="button"  class="btn btn-success btn-block edit-btn" >修改</button>
 											    </div>
 											  </div>
 												<c:if test="${message != null}">
@@ -108,8 +112,49 @@
 		
 	</body>
 	<script>
-		$(".forget-pwd").on("click",function(){
-            open("system/forgetP");
+
+		var emailReg = /^.{1,50}@[a-z0-9]{2,8}\.[a-z]{2,3}$/i;
+
+		$(".edit-btn").on("click",function(){
+		   if(!$("#valiCode").val()){
+               $(".vali-code").html("请获取验证后重试！")
+		   }else if(!$("#vali-password").val()||!$("#password").val()){
+		       $(".vali-pwd").html("密码不能为空！");
+		   }else if($("#password").val() !== $("#vali-password").val()){
+               $(".vali-pwd").html("两次密码输入不一致！");
+		   }else{
+		    	$("form").submit();
+		   }
+		});
+
+		$("#valiCode").on("focus",function(){
+            $(".vali-code").html("");
+		});
+
+		$("#password").on("focus",function(){
+            $(".vali-pwd").html("");
+		})
+
+        $("#vali-password").on("focus",function(){
+            $(".vali-pwd").html("");
+        });
+
+		$(".get-vali-code").on("click",function(){
+		   if(!$("#email").val()){
+		       $(".vali-code").html("请输入邮箱！");
+		   }else if(!emailReg.test($("#email").val())){
+               $(".vali-code").html("邮箱格式不正确！");
+		   }else{
+		       $.ajax({
+				   url:"system/getEmailCode",
+				   data:"email="+$("#email").val(),
+				   type:"post",
+				   async:false,
+				   success:function(){
+				       alert("获取成功！请输入验证码！");
+				   }
+			   });
+		   }
 		});
 	</script>
 </html>

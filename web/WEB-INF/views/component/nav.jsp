@@ -46,8 +46,7 @@
 		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="iconfont icon-yonghutianchong"></span> ${loginUser.uname } <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="javascript:void(0)"><button class="btn btn-link user-info" style="text-decoration: none">个人信息</button></a></li>
-		            <li><a href="javascript:void(0)"><button class="btn btn-link change-pwd-btn" data-login="${loginUser.userId}" style="text-decoration: none">密码修改</button></a></li>
-					<li><a href="javascript:void(0)"><button class="btn btn-link forget-pwd-btn" data-login="${loginUser.userId}" style="text-decoration: none">忘记密码</button></a></li>
+		            <li><a href="javascript:void(0)"><button class="btn btn-link change-pwd-btn" data-login="${loginUser.userId }" style="text-decoration: none">密码修改</button></a></li>
 		            <li><a href="javascript:void(0)"><button class="btn btn-link authority-get" style="text-decoration: none">权限申请</button></a></li>
 		            <li role="separator" class="divider"></li>
 		            <li><a href="javascript:void(0)"><button class="btn btn-link security-exit" style="text-decoration: none">安全退出</button></a></li>
@@ -62,29 +61,29 @@
 
 
 		<!-- 忘记密码获取验证码 -->
-		<div class="modal fade " id="forget-pwd" tabindex="-1" role="dialog" aria-labelledby="forget-pwd-modal">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="forget-pwd-modal">邮箱验证</h4>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="form-group">
-								<label for="repeat-forget-pwd" class="control-label">邮箱:</label>
-								<input type="text" class="form-control" name='email' id="repeat-forget-pwd">
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<button type="button" class="btn btn-primary vali-confirm">获取验证码</button>
-					</div>
+		<%--<div class="modal fade " id="forget-pwd" tabindex="-1" role="dialog" aria-labelledby="forget-pwd-modal">--%>
+			<%--<div class="modal-dialog modal-sm" role="document">--%>
+				<%--<div class="modal-content">--%>
+					<%--<div class="modal-header">--%>
+						<%--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>--%>
+						<%--<h4 class="modal-title" id="forget-pwd-modal">邮箱验证</h4>--%>
+					<%--</div>--%>
+					<%--<div class="modal-body">--%>
+						<%--<form>--%>
+							<%--<div class="form-group">--%>
+								<%--<label for="repeat-forget-pwd" class="control-label">邮箱:</label>--%>
+								<%--<input type="text" class="form-control" name='email' id="repeat-forget-pwd">--%>
+							<%--</div>--%>
+						<%--</form>--%>
+					<%--</div>--%>
+					<%--<div class="modal-footer">--%>
+						<%--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>--%>
+						<%--<button type="button" class="btn btn-primary vali-confirm">获取验证码</button>--%>
+					<%--</div>--%>
 
-				</div>
-			</div>
-		</div>
+				<%--</div>--%>
+			<%--</div>--%>
+		<%--</div>--%>
 
 		<!-- 修改密码模态框 -->
 		<div class="modal fade " id="change-pwd" tabindex="-1" role="dialog" aria-labelledby="change-pwd-modal">
@@ -99,12 +98,12 @@
 							<div class="form-group change-pwd-form">
 								<label for="src-change-pwd" class="control-label">原密码:</label>
 								<input type="password" class="form-control" name="srcPwd" id="src-change-pwd">
-								<span class="help-block src-pwd-vali"></span>
+								<span class="help-block src-pwd-vali" style="color:red"></span>
 							</div>
 							<div class="form-group">
 								<label for="new-change-pwd" class="control-label">新密码:</label>
 								<input type="password" class="form-control" name="password" id="new-change-pwd">
-								<span class="help-block new-pwd-vali"></span>
+								<span class="help-block new-pwd-vali" style="color:red"></span>
 							</div>
 							<div class="form-group">
 								<label for="repeat-change-pwd" class="control-label">重复密码:</label>
@@ -154,43 +153,37 @@
 		   $("#change-pwd").modal("toggle");
 		});
 
-		$(".forget-pwd-btn").on("click",function(){
-            // $("#vali-info .modal-body form").empty();
-            // $("#vali-info .modal-body form").html("<div class=\"form-group\"><label for=\"repeat-forget-pwd\" class=\"control-label\">邮箱:</label><input type=\"text\" class=\"form-control\" name='email' id=\"repeat-forget-pwd\"><button class='btn btn-sm btn-info get-vali-code'>获取验证码</button></div>");
-            // $("#vali-info").find("form").prop("action","user/valiEmail");
-            $("#forget-pwd").modal("toggle");
+		$(".confirm-change").on("click",function(){
+		    if($("#new-change-pwd").val()!==$("#repeat-change-pwd").val()){
+                $(".new-pwd-vali").html("两次密码输入不一致！");
+			}else if($("#new-change-pwd").val() === $("#src-change-pwd").val()){
+                $(".src-pwd-vali").html("原密码与新密码相同，请重新输入！");
+			}else{
+				$.ajax({
+					url:"user/changePwd/"+$(".change-pwd-btn").data("login"),
+					data:$("#change-pwd").find("form").serialize(),
+					success:function(res){
+						if(res){
+							$(".src-pwd-vali").html(res);
+						}else{
+							var resu = confirm("修改成功！按确认重新登录！");
+							if(resu)
+							    location="logout"
+							$("#change-pwd").modal("toggle");
+						}
+					}
+				});
+            }
 		});
 
-		$(".confirm-change").on("click",function(){
-		    alert("aaa")
-		    $.ajax({
-				url:"user/valiPwd",
-				data:"userId="+$(".change-pwd-btn").data("login")+"&password="+$("#src-change-pwd").val(),
-				dataType:"json",
-				success:function(res){
-				    alert(res==="true");
-				    if(res){
-				        if($("#new-change-pwd").val()===$("#repeat-change-pwd").val()){
-				            $.ajax({
-								url:"user/changePwd",
-								data:"userId="+$(".change-pwd-btn").data("login")+"&password="+$("#new-change-pwd").val(),
-								type:"post",
-								success:function(res){
-								    var result = confirm("修改成功！请使用新密码登录！");
-								    if(result){
-								        location="logout";
-									}
-								}
-							});
-						}else{
-                            $(".new-pwd-vali").html("两次密码输入不一致！");
-						}
-					}else{
-				        $(".src-pwd-vali").html("原密码不正确！");
-					}
-				}
-			});
-		    alert("111")
+		$("#src-change-pwd").on("focus",function(){
+		   $(".src-pwd-vali").html("");
 		});
+		$("#new-change-pwd").on("focus",function(){
+		   $(".new-pwd-vali").html("");
+		});
+        $("#repeat-change-pwd").on("focus",function(){
+            $(".new-pwd-vali").html("");
+        });
 	</script>
 </html>

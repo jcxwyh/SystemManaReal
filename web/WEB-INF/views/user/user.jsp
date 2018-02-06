@@ -49,23 +49,25 @@
                             <c:choose>
                                 <c:when test="${users.size()>0}">
                                     <c:forEach items="${users}" var="user">
-                                        <tr>
-                                            <td>${user.userId}</td>
-                                            <td>${user.uname}</td>
-                                            <td>${user.gender==1?"男":"女"}</td>
-                                            <td>${user.email}</td>
-                                            <td>
-                                                <span class="label ${user.locked==1?'label-primary':'label-warning'}">${user.locked==1?'解锁':'锁定'}</span>
-                                                <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
-                                            </td>
-                                            <td>${user.description}</td>
-                                            <td>${user.dept==null?"无":user.dept.dname}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-xs user-role" data-userid="${user.userId}">分配角色</button>
-                                                <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
-                                                <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
-                                            </td>
-                                        </tr>
+                                        <c:if test="${user.uname!='admin'}">
+                                            <tr>
+                                                <td>${user.userId}</td>
+                                                <td>${user.uname}</td>
+                                                <td>${user.gender==1?"男":"女"}</td>
+                                                <td>${user.email}</td>
+                                                <td>
+                                                    <span class="label ${user.locked==1?'label-primary':'label-warning'}">${user.locked==1?'解锁':'锁定'}</span>
+                                                    <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
+                                                </td>
+                                                <td>${user.description}</td>
+                                                <td>${user.dept==null?"无":user.dept.dname}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info btn-xs user-role" data-userid="${user.userId}">分配角色</button>
+                                                    <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
+                                                    <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
+                                                </td>
+                                            </tr>
+                                        </c:if>
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
@@ -148,8 +150,12 @@
     $(".user-tbody").on("click",".user-role",function(){
         //弹出角色列表共选择
         $("#assign-role").modal("toggle");
+        //获取ID
         var userId = $(this).data("userid");
+        //置空表单
         $("#assign-role").find("form").empty();
+        //给分配按钮绑定id
+        $(".assign-role-btn").data("userid",userId);
         $.ajax({
             url:"user/getRoles",
             dataType:"json",
@@ -161,9 +167,11 @@
                             if(p.userId===userId){
                                 flag=true;
                             }
-                        })
-                        $("#assign-role").find("form").append("<div class=\"checkbox\"><label><input type=\"checkbox\" name='roleIds' value='"+o.roleId+"' "+(flag?"checked":"")+">" +
+                        });
+                        if(o.rname!=='admin'){
+                            $("#assign-role").find("form").append("<div class=\"checkbox\"><label><input type=\"checkbox\" name='roleIds' value='"+o.roleId+"' "+(flag?"checked":"")+">" +
                                 o.rname + "</label></div>");
+                        }
                     });
                 }else{
                     $("#assign-role").find("form").append("<span>暂无角色</span>");
@@ -173,13 +181,20 @@
     });
 
     $(".assign-role-btn").on("click",function(){
+        var userId = $(this).data("userid");
+        //alert($("#assign-role").find("form").serialize());
+        alert(userId);
         $.ajax({
-            url:"user/assign/",
+            url:"user/assign/"+userId,
+            type:"post",
             data:$("#assign-role").find("form").serialize(),
+            dataType:"json",
             success:function(res){
+                console.log(res)
                 $("#assign-role").modal("toggle");
             }
         });
+        alert("aaa");
     });
 </script>
 </html>

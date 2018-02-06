@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -40,18 +41,21 @@
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control" name="uname" id="uname" placeholder="请输入用户名">
                                     </div>
+                                    <span class="help-block" style="color:red"><form:errors path="user.uname"></form:errors> </span>
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="col-sm-2 control-label">密码</label>
                                     <div class="col-sm-10">
                                         <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
                                     </div>
+                                    <span class="help-block" style="color:red"><form:errors  path="user.password"></form:errors> </span>
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">邮箱</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱">
                                     </div>
+                                    <span class="help-block" style="color:red"><form:errors path="user.email"></form:errors> </span>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">性别</label>

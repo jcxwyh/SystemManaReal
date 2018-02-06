@@ -47,21 +47,24 @@
                             <c:choose>
                                 <c:when test="${roles.size()>0}">
                                     <c:forEach items="${roles}" var="role">
-                                        <tr>
-                                            <td>${role.roleId}</td>
-                                            <td><button class="btn btn-xs btn-link show-resource">${role.rname}</button></td>
-                                            <td>${role.constant}</td>
-                                            <td>
-                                                <span class="label ${role.enabled==1?'label-success':'label-danger'}">${role.enabled==1?'启用':'禁用'}</span>
-                                            </td>
-                                            <td>${role.description}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-info btn-xs role-menu" data-userid="${user.userId}">分配菜单</button>
-                                                <button type="button" class="btn btn-primary btn-xs role-auth" data-userid="${user.userId}">分配权限</button>
-                                                <button type="button" class="btn btn-warning btn-xs role-edit" data-roleid="${role.roleId}">修改</button>
-                                                <button type="button" class="btn btn-danger btn-xs role-delete" data-roleid="${role.roleId}">删除</button>
-                                            </td>
-                                        </tr>
+                                        <c:if test="${role.rname!='admin'}">
+                                            <tr>
+                                                <td>${role.roleId}</td>
+                                                <td><button class="btn btn-xs btn-link show-resource">${role.rname}</button></td>
+                                                <td>${role.constant}</td>
+                                                <td>
+                                                    <span class="label ${role.enabled==1?'label-success':'label-danger'}">${role.enabled==1?'启用':'禁用'}</span>
+                                                </td>
+                                                <td>${role.description}</td>
+                                                <td>
+                                                        <%--<button type="button" class="btn btn-info btn-xs role-menu" data-userid="${user.userId}">分配菜单</button>--%>
+                                                        <%--<button type="button" class="btn btn-primary btn-xs role-auth" data-userid="${user.userId}">分配权限</button>--%>
+                                                    <button type="button" class="btn btn-primary btn-xs role-resource" data-roleid="${role.roleId}">分配资源</button>
+                                                    <button type="button" class="btn btn-warning btn-xs role-edit" data-roleid="${role.roleId}">修改</button>
+                                                    <button type="button" class="btn btn-danger btn-xs role-delete" data-roleid="${role.roleId}">删除</button>
+                                                </td>
+                                            </tr>
+                                        </c:if>
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
@@ -112,6 +115,10 @@
     });
     $(".role-tbody").on("click",".role-delete",function(){
         location="role/delete/"+$(this).data("roleid");
+    });
+
+    $(".role-resource").on("click",function(){
+       location="role/assignResource/"+$(this).data("roleid");
     });
 </script>
 </html>
