@@ -28,7 +28,7 @@ public class LoginController {
 	public String login(User user, HttpServletRequest request) {
 		User currentUser = this.loginService.findByName(user.getUname());
 		if(Objects.nonNull(currentUser) && Objects.equals(currentUser.getPassword(),user.getPassword())){
-			request.getSession().setAttribute("loginUser",user);
+			request.getSession().setAttribute("loginUser",currentUser);
 			return "redirect:/system";
 		}
 		request.setAttribute("message","账户名或密码错误！");

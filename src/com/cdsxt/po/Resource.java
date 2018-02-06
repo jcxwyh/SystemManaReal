@@ -1,5 +1,6 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -36,11 +37,19 @@ public class Resource {
 	@JoinColumn(name="parent")
 	private Resource resource;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "resource")
 	private Set<Resource> resources = new HashSet<>();
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "resources")
 	private Set<Role> roles = new HashSet<>();
+
+    public Resource(Integer id) {
+    }
+
+	public Resource() {
+	}
 
 	public Integer getResId() {
 		return resId;

@@ -9,9 +9,25 @@
 	
 	<!-- 开启包扫描 -->
 	<context:component-scan base-package="com.cdsxt.web"></context:component-scan>
-	
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" >
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/plain;charset=utf-8</value>
+							<value>text/html;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	<!-- 开启mvc注解自动配置 -->
-	<mvc:annotation-driven></mvc:annotation-driven>
+	<mvc:annotation-driven validator="validator"></mvc:annotation-driven>
 	
 	<!-- 静态资源映射 -->
 	<mvc:resources location="/WEB-INF/assets/"   mapping="/assets/**" />
@@ -23,6 +39,11 @@
 		<property name="suffix"  value=".jsp"></property>
 	</bean>
 
+	<!-- 配置验证器 -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+	</bean>
+
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
@@ -32,6 +53,8 @@
 			<mvc:exclude-mapping path="/"/>
 			<mvc:exclude-mapping path="/login"/>
 			<mvc:exclude-mapping path="/logout"/>
+			<mvc:exclude-mapping path="/system/forgetP"/>
+			<mvc:exclude-mapping path="/system/getEmailCode"/>
 			<bean class="com.cdsxt.interceptor.LoginInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

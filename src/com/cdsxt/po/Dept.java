@@ -1,5 +1,6 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -30,6 +31,7 @@ public class Dept {
 	private String cname;
 	private String cdesc;
 	//与用户一对多
+	@JsonIgnore
 	@OneToMany(mappedBy = "dept")
 	private Set<User> uers = new HashSet<>();
 

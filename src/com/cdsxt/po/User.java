@@ -1,6 +1,9 @@
 package com.cdsxt.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -21,14 +24,21 @@ public class User {
 	@GeneratedValue(generator = "userGen")
 	@Column(name="user_id")
 	private Integer userId;
+
+	//@Length(min=2,max=10,message="用户名应为2-10个字符组成")
 	@Column(unique = true)
 	private String uname;
+
+	//@Length(min=8,max=18,message = "密码由8-18个字符组成")
 	private String password;
+
+	//@Email
 	@Column(unique = true)
 	private String email;
 	private Byte gender;
 	private Byte enabled;
 	private Byte locked;
+
 	private String description;
 
 	//与部门是一对多关系
@@ -37,6 +47,7 @@ public class User {
 	private Dept dept;
 	//与角色是多对多
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name="userId")},inverseJoinColumns = {@JoinColumn(name="roleId")})
 	private Set<Role> roles = new HashSet<>();

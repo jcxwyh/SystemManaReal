@@ -54,9 +54,15 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
         user.setRoles(new HashSet<>());
         Set<Role> roles = user.getRoles();
         for(Integer id:roleIds){
+            System.out.println(id);
             Role role = new Role();
             role.setRoleId(id);
             roles.add(role);
         }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return (User) this.getSession().createQuery("from User u where u.email=:email").setParameter("email",email).list().get(0);
     }
 }

@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService{
     public void assignRoles(Integer userId, ArrayList<Integer> roleIds) {
         this.userDao.assignRoles(userId,roleIds);
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return this.userDao.findByEmail(email);
+    }
 }

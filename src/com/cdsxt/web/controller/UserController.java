@@ -7,9 +7,13 @@ import com.cdsxt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,14 @@ public class UserController {
 
     @RequestMapping(value="add",method=RequestMethod.POST)
     public String add(User user){
+//        System.out.println(result.hasErrors());
+//        if(result.hasErrors()){
+//            model.addAttribute("user",user);
+//            return "user/userAdd";
+//        }else{
+//            this.userService.add(user);
+//            return "redirect:/user";
+//        }
         this.userService.add(user);
         return "redirect:/user";
     }
@@ -61,22 +73,36 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @RequestMapping("valiPwd")
-    @ResponseBody
-    public String valiPwd(@RequestParam("userId") Integer userId,@RequestParam("password") String password){
-        System.out.println(111);
-        User user = this.userService.findOne(userId);
-        if(Objects.isNull(user)||Objects.equals(user.getPassword(),password)){
-            return "false";
-        }
-        return "true";
-    }
+//    @RequestMapping("valiPwd")
+//    @ResponseBody
+//    public String valiPwd(@RequestParam("srcPwd") Integer userId,@RequestParam("password") String password){
+//        System.out.println(userId+"---"+password);
+//        User user = this.userService.findOne(userId);
+//        if(Objects.isNull(user)||Objects.equals(user.getPassword(),password)){
+//            return "false";
+//        }
+//        return "true";
+//    }
 
-    @RequestMapping("changePwd")
+    /**
+     * 更改密码
+     * 验证原密码，
+     * 失败返回错误信息
+     * 成功修改密码并返回空字符串
+     * @param userId
+     * @param password
+     * @return
+     */
+    @RequestMapping("changePwd/{userId}")
     @ResponseBody
-    public String changePwd(@RequestParam("userId") Integer userId,@RequestParam("password") String password){
+    public String changePwd(@PathVariable("userId") Integer userId,@RequestParam("srcPwd") String srcPwd,@RequestParam("password") String password){
+        System.out.println(userId+"--"+srcPwd+"--"+password);
+        User user = this.userService.findOne(userId);
+        if(Objects.isNull(user)||!Objects.equals(user.getPassword(),srcPwd)){
+            return "原密码不正确，请重试！";
+        }
         this.userService.changePwd(userId,password);
-        return "true";
+        return "";
     }
 
     @RequestMapping("getRoles")
@@ -86,7 +112,28 @@ public class UserController {
     }
 
     @RequestMapping("assign/{userId}")
-    public void assign(@PathVariable("userId") Integer userId, ArrayList<Integer> roleIds){
+    @ResponseBody
+    public String assign(@PathVariable("userId") Integer userId, @RequestParam("roleIds") ArrayList<Integer> roleIds){
+        System.out.println(userId+"--"+roleIds);
         this.userService.assignRoles(userId,roleIds);
+        return "true";
+    }
+
+    @RequestMapping("forgetPwd")
+    public String forgetPwd(@RequestParam("email") String email,@RequestParam("valiCode") String valiCode, @RequestParam("password") String password, HttpServletRequest request){
+        Object currentCode = request.getServletContext().getAttribute("emailCode");
+        User user = this.userService.findByEmail(email);
+
+        if(Objects.isNull(currentCode) || !(currentCode instanceof String)||((String) currentCode).length()<1||!Objects.equals(valiCode,currentCode)){
+            request.setAttribute("message","验证码错误！");
+            return "forgetPwd";
+        }else if(!Objects.equals(user.getEmail(),email)){
+            request.setAttribute("message","邮箱不对应！");
+            return "forgetPwd";
+        }else{
+            user.setPassword(password);
+            this.userService.update(user);
+            return "login";
+        }
     }
 }

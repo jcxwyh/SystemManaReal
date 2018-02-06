@@ -19,4 +19,6 @@ public interface UserService {
     void changePwd(Integer userId, String password);
 
     void assignRoles(Integer userId, ArrayList<Integer> roleIds);
+
+    User findByEmail(String email);
 }

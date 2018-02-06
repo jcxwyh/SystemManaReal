@@ -1,7 +1,10 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
 import com.cdsxt.po.User;
+import com.cdsxt.service.AuthorityService;
+import com.cdsxt.service.MenuService;
 import com.cdsxt.service.RoleService;
 import com.cdsxt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("role")
@@ -53,5 +59,17 @@ public class RoleController {
     public String delete(@PathVariable("roleId") Integer roleId){
         this.roleService.delete(roleId);
         return "redirect:/role";
+    }
+
+    @RequestMapping(value="assignResource/{roleId}",method = RequestMethod.GET)
+    public String assignResource(@PathVariable("roleId") Integer roleId,Model model){
+        model.addAttribute("role",this.roleService.findOne(roleId));
+        return "role/assignResource";
+    }
+
+    @RequestMapping(value="assignResource/{roleId}",method=RequestMethod.POST)
+    public String assignResource(@PathVariable("roleId") Integer roleId, @RequestParam("resId") ArrayList<Integer> resId){
+        this.roleService.assignResource(roleId,resId);
+        return "redirect:role";
     }
 }
