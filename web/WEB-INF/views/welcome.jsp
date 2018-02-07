@@ -30,7 +30,7 @@
 				
 				<div class="col-md-10">
 					<div class="jumbotron text-center"  style="background-color:white">
-					  <h1>欢迎${loginUser.uname }使用本系统</h1>
+					  <h1>欢迎${loginUser.user.uname }使用本系统</h1>
 					</div>
 				</div>
 			</div>

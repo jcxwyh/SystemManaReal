@@ -29,37 +29,39 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>资源分配</strong>
-                        <button type="button" class="btn btn-danger assign-resource-cancel pull-right" style="margin-top: -8px">取消</button>
+                        <button type="button" class="btn btn-danger btn-sm assign-resource-cancel pull-right" style="margin-top: -6px">取消</button>
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <div class="row">
-                            <form class="form-horizontal" action="role/assignResource/${role.roleId}" method="post">
-                                <div class="col-md-4 col-md-offset-2" >
+                    <div class="row" style="word-wrap:break-word;">
+                        <form id="assign-form" action="role/assignResource/${role.roleId}" method="post">
+                            <c:forEach items="${menus}" var="menu">
+                                <div class="col-md-2">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title">分配菜单</h3>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="${menu.resId}" name="resList" ${role.resources.contains(menu)?"checked":""}/> ${menu.rname}
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="panel-body">
-                                            <div id="menu-list">
-
-                                            </div>
+                                            <c:if test="${menu.resources.size()>0}">
+                                                <c:forEach items="${menu.resources}" var="auth">
+                                                    <c:if test="${auth.type==0}">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" value="${auth.resId}" name="resList" ${role.resources.contains(auth)?"checked":""}/> ${auth.rname}
+                                                            </label>
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">分配权限</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div id="auth-list">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                            </c:forEach>
+                        </form>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -87,7 +89,7 @@
 <script src="assets/js/jquery.ztree.all.min.js"></script>
 <script>
     $(".assign-resource-cancel").on("click",function () {
-       location="role";
+        history.go(-1);
     });
 
     $(".assign-resource-submit").on("click",function(){
@@ -97,96 +99,118 @@
     $(".assign-resource-reset").on("click",function(){
         $("form").get(0).reset();
     });
-
-    //获取ztree节点数据填充
-    $.ajax({
-        url:"menu/getMenus",
-        type:"get",
-        success:function(res){
-            console.log(res)
-            //console.log($.type(res))
-            // var setting = {
-            //     data:{
-            //         simpleData:{
-            //             enable:true,
-            //             id:'resource.resId',
-            //             pid:'resId'
-            //         },
-            //         key:{
-            //             checked:false,
-            //             children:"rname",
-            //             name:"resource.rname"
-            //         }
-            //     },
-            //     check:{
-            //         enable:true,
-            //         chkStyle:'checkbox',
-            //         chkboxType: { "Y": "p", "N": "s" }
-            //     }
-            // }
-            //
-            // $.fn.zTree.init($("#menu-list"),setting,res);
-
-            $("#menu-list").empty();
-            if($.type(res) ==="array" && res.length){
-                $.each(res,function(i,o){
-                    var flag = false;
-                    $.each(o.roles,function(j,p){
-                        if(p.roleId===${role.roleId}){
-                            flag=true;
-                        }
-                    });
-                    $("#menu-list").append("<div class='checkbox'><label><input type='checkbox' name='menuIds' value='"+o.resId+"' "+(flag?"checked":"")+">"+
-                                            o.rname + "</label></div>");
-                });
+    //给菜单复选框绑定change事件
+    //类似全选功能
+    $("#assign-form .panel-heading").on("change","input[type=checkbox]",function(){
+        $(this).parent().parent().parent().parent().find(".panel-body").find("input[type=checkbox]").prop("checked",$(this).prop("checked"));
+    });
+    //权限选择则菜单选中
+    $("#assign-form .panel-body").on("change","input[type=checkbox]",function(){
+        var flag=false;
+        $(this).parent().parent().parent().find("input[type=checkbox]").each(function(){
+            //alert($(this).prop("checked"));
+            if($(this).prop("checked")){
+                //有选中就是false
+                flag=true;
             }
+        })
+        if(true){
+            $(this).parent().parent().parent().parent().find(".panel-heading").find("input[type=checkbox]").prop("checked",flag);
         }
     });
-    //填充权限
-    (function(){
-        $.ajax({
-            url:"authority/getAuths",
-            dataType:"json",
-            type:"get",
-            success:function(res){
-                //console.log($.type(res))
-                // var setting = {
-                //     data:{
-                //         simpleData:{
-                //             enable:true,
-                //             id:'resId',
-                //             pId:'parent',
-                //             rootPid:null
-                //         }
-                //     },
-                //     check:{
-                //         enable:true,
-                //         chkStyle:'checkbox',
-                //         chkboxType: { "Y": "p", "N": "s" }
-                //     }
-                // }
-                //
-                // $.fn.zTree.init($("#auth-list"),setting,res);
 
-                $("#auth-list").empty();
-                if($.type(res) ==="array" && res.length){
-                    $.each(res,function(i,o){
-                        var flag = false;
-                        $.each(o.roles,function(j,p){
-                            if(p.roleId===${role.roleId}){
-                                flag=true;
-                            }
-                        });
-                        $("#auth-list").append("<div class='checkbox'><label><input type='checkbox' name='authIds' value='"+o.resId+"' "+(flag?"checked":"")+">"+
-                            o.rname + "</label></div>");
-                    });
-                }
-            }
-        });
-    })()
 
-    function iteratorList(){
 
-    }
+
+    <%--//获取ztree节点数据填充--%>
+    <%--$.ajax({--%>
+        <%--url:"menu/getMenus",--%>
+        <%--type:"get",--%>
+        <%--success:function(res){--%>
+            <%--console.log(res)--%>
+            <%--//console.log($.type(res))--%>
+            <%--// var setting = {--%>
+            <%--//     data:{--%>
+            <%--//         simpleData:{--%>
+            <%--//             enable:true,--%>
+            <%--//             id:'resource.resId',--%>
+            <%--//             pid:'resId'--%>
+            <%--//         },--%>
+            <%--//         key:{--%>
+            <%--//             checked:false,--%>
+            <%--//             children:"rname",--%>
+            <%--//             name:"resource.rname"--%>
+            <%--//         }--%>
+            <%--//     },--%>
+            <%--//     check:{--%>
+            <%--//         enable:true,--%>
+            <%--//         chkStyle:'checkbox',--%>
+            <%--//         chkboxType: { "Y": "p", "N": "s" }--%>
+            <%--//     }--%>
+            <%--// }--%>
+            <%--//--%>
+            <%--// $.fn.zTree.init($("#menu-list"),setting,res);--%>
+
+            <%--$("#menu-list").empty();--%>
+            <%--if($.type(res) ==="array" && res.length){--%>
+                <%--$.each(res,function(i,o){--%>
+                    <%--var flag = false;--%>
+                    <%--$.each(o.roles,function(j,p){--%>
+                        <%--if(p.roleId===${role.roleId}){--%>
+                            <%--flag=true;--%>
+                        <%--}--%>
+                    <%--});--%>
+                    <%--$("#menu-list").append("<div class='checkbox'><label><input type='checkbox' name='menuIds' value='"+o.resId+"' "+(flag?"checked":"")+">"+--%>
+                                            <%--o.rname + "</label></div>");--%>
+                <%--});--%>
+            <%--}--%>
+        <%--}--%>
+    <%--});--%>
+    <%--//填充权限--%>
+    <%--(function(){--%>
+        <%--$.ajax({--%>
+            <%--url:"authority/getAuths",--%>
+            <%--dataType:"json",--%>
+            <%--type:"get",--%>
+            <%--success:function(res){--%>
+                <%--//console.log($.type(res))--%>
+                <%--// var setting = {--%>
+                <%--//     data:{--%>
+                <%--//         simpleData:{--%>
+                <%--//             enable:true,--%>
+                <%--//             id:'resId',--%>
+                <%--//             pId:'parent',--%>
+                <%--//             rootPid:null--%>
+                <%--//         }--%>
+                <%--//     },--%>
+                <%--//     check:{--%>
+                <%--//         enable:true,--%>
+                <%--//         chkStyle:'checkbox',--%>
+                <%--//         chkboxType: { "Y": "p", "N": "s" }--%>
+                <%--//     }--%>
+                <%--// }--%>
+                <%--//--%>
+                <%--// $.fn.zTree.init($("#auth-list"),setting,res);--%>
+
+                <%--$("#auth-list").empty();--%>
+                <%--if($.type(res) ==="array" && res.length){--%>
+                    <%--$.each(res,function(i,o){--%>
+                        <%--var flag = false;--%>
+                        <%--$.each(o.roles,function(j,p){--%>
+                            <%--if(p.roleId===${role.roleId}){--%>
+                                <%--flag=true;--%>
+                            <%--}--%>
+                        <%--});--%>
+                        <%--$("#auth-list").append("<div class='checkbox'><label><input type='checkbox' name='authIds' value='"+o.resId+"' "+(flag?"checked":"")+">"+--%>
+                            <%--o.rname + "</label></div>");--%>
+                    <%--});--%>
+                <%--}--%>
+            <%--}--%>
+        <%--});--%>
+    <%--})()--%>
+
+    <%--function iteratorList(){--%>
+
+    <%--}--%>
 </script>
 </html>

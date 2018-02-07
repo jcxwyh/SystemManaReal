@@ -28,7 +28,11 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>角色列表</strong>
-                        <button type="button" class="btn btn-success pull-right role-add-btn" style="margin-top:-8px" data-href="role/add">添加角色</button>
+                        <c:forEach items="${loginUser.auths}" var="auth">
+                            <c:if test="${auth.target=='SYS_ROLE_ADD'}">
+                                <button type="button" class="btn btn-success pull-right role-add-btn" style="margin-top:-8px" data-href="role/add">添加角色</button>
+                            </c:if>
+                        </c:forEach>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -57,11 +61,17 @@
                                                 </td>
                                                 <td>${role.description}</td>
                                                 <td>
-                                                        <%--<button type="button" class="btn btn-info btn-xs role-menu" data-userid="${user.userId}">分配菜单</button>--%>
-                                                        <%--<button type="button" class="btn btn-primary btn-xs role-auth" data-userid="${user.userId}">分配权限</button>--%>
-                                                    <button type="button" class="btn btn-primary btn-xs role-resource" data-roleid="${role.roleId}">分配资源</button>
-                                                    <button type="button" class="btn btn-warning btn-xs role-edit" data-roleid="${role.roleId}">修改</button>
-                                                    <button type="button" class="btn btn-danger btn-xs role-delete" data-roleid="${role.roleId}">删除</button>
+                                                    <c:forEach items="${loginUser.auths}" var="auth">
+                                                        <c:if test="${auth.target=='SYS_ASSIGN_RESOURCE'}">
+                                                            <button type="button" class="btn btn-primary btn-xs role-resource" data-roleid="${role.roleId}">分配资源</button>
+                                                        </c:if>
+                                                        <c:if test="${auth.target=='SYS_ROLE_UPDATE'}">
+                                                            <button type="button" class="btn btn-warning btn-xs role-edit" data-roleid="${role.roleId}">修改</button>
+                                                        </c:if>
+                                                        <c:if test="${auth.target=='SYS_ROLE_DELETE'}">
+                                                            <button type="button" class="btn btn-danger btn-xs role-delete" data-roleid="${role.roleId}">删除</button>
+                                                        </c:if>
+                                                    </c:forEach>
                                                 </td>
                                             </tr>
                                         </c:if>
@@ -76,27 +86,27 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <%--<div class="panel-footer">--%>
+                    <%--<nav aria-label="Page navigation">--%>
+                        <%--<ul class="pagination">--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Previous">--%>
+                                    <%--<span aria-hidden="true">&laquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                            <%--<li><a href="#">1</a></li>--%>
+                            <%--<li><a href="#">2</a></li>--%>
+                            <%--<li><a href="#">3</a></li>--%>
+                            <%--<li><a href="#">4</a></li>--%>
+                            <%--<li><a href="#">5</a></li>--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Next">--%>
+                                    <%--<span aria-hidden="true">&raquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</nav>--%>
+                <%--</div>--%>
             </div>
         </div>
     </div>

@@ -28,7 +28,12 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>部门列表</strong>
-                        <button type="button" class="btn btn-success pull-right dept-add-btn" style="margin-top:-8px" data-href="dept/add">添加部门</button>
+                        <c:forEach items="${loginUser.auths}" var="auth">
+                            <c:if test="${auth.target=='SYS_DEPT_ADD'}">
+                                <button type="button" class="btn btn-success pull-right dept-add-btn btn-sm" style="margin-top:-6px" data-href="dept/add">添加部门</button>
+                            </c:if>
+                        </c:forEach>
+
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -40,7 +45,9 @@
                                 <th>部门描述</th>
                                 <th>所属公司</th>
                                 <th>公司描述</th>
-                                <th>操作</th>
+                                <c:if test="${loginUser.auths.size()>0}">
+                                    <th>操作</th>
+                                </c:if>
                             </tr>
                         </thead>
                         <tbody class="dept-tbody">
@@ -54,8 +61,16 @@
                                             <td>${dept.cname}</td>
                                             <td>${dept.cdesc}</td>
                                             <td>
-                                                <button type="button" class="btn btn-warning btn-xs dept-edit" data-deptno="${dept.deptno}">修改</button>
-                                                <button type="button" class="btn btn-danger btn-xs dept-delete" data-deptno="${dept.deptno}">删除</button>
+                                                <c:forEach items="${loginUser.auths}" var="auth">
+                                                    <c:if test="${auth.target=='SYS_DEPT_UPDATE'}">
+                                                        <button type="button" class="btn btn-warning btn-xs dept-edit" data-deptno="${dept.deptno}">修改</button>
+                                                    </c:if>
+                                                    <c:if test="${auth.target=='SYS_DEPT_DELETE'}">
+                                                        <button type="button" class="btn btn-danger btn-xs dept-delete" data-deptno="${dept.deptno}">删除</button>
+                                                    </c:if>
+                                                </c:forEach>
+
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -69,27 +84,27 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <%--<div class="panel-footer">--%>
+                    <%--<nav aria-label="Page navigation">--%>
+                        <%--<ul class="pagination">--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Previous">--%>
+                                    <%--<span aria-hidden="true">&laquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                            <%--<li><a href="#">1</a></li>--%>
+                            <%--<li><a href="#">2</a></li>--%>
+                            <%--<li><a href="#">3</a></li>--%>
+                            <%--<li><a href="#">4</a></li>--%>
+                            <%--<li><a href="#">5</a></li>--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Next">--%>
+                                    <%--<span aria-hidden="true">&raquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</nav>--%>
+                <%--</div>--%>
             </div>
         </div>
     </div>
@@ -108,7 +123,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary del-confirm" >确认删除</button>
+                <button type="button" class="btn btn-primary del-confirm" data-deptno="0">确认删除</button>
             </div>
         </div>
     </div>
@@ -128,16 +143,21 @@
     });
     $(".dept-tbody").on("click",".dept-delete",function(){
         var deptno = $(this).data("deptno");
+        //console.log($(".del-confirm").data("deptno"))
+        $(".del-confirm").data("deptno",deptno);
+        //console.log($(".del-confirm").data("deptno"))
+        //alert(deptno);
         $.ajax({
             url:"dept/valiUser",
             data:"deptno="+deptno,
             type:"post",
-            async:false,
+            //async:false,
             success:function(res){
                 console.log(res);
                 $("#del-dept-model").modal("toggle");
                 $("#del-dept-model .modal-body").empty();
-                $(".del-confirm").data("deptno",deptno);
+                // console.log($(".del-confirm"));
+
                 if(res){
                     $("#del-dept-model .modal-body").append("<h4>此部门中还有员工数据！请选择删除模式：</h4><input type='radio' value='1' name='mode' checked>级联删除&nbsp;<input type='radio' name='mode' value='2'>外键置空");
                 }else{
@@ -145,9 +165,11 @@
                 }
             }
         });
+
     });
     $(".del-confirm").on("click",function(){
         //alert("dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val());
+        //console.log($(this).data("deptno"))
         location="dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val();
     });
 </script>

@@ -20,7 +20,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <jsp:include page="../component/left.jsp"></jsp:include>
+            <jsp:include page="../component/left.jsp">
+                <jsp:param name="user" value="部门管理"></jsp:param>
+            </jsp:include>
         </div>
 
         <div class="col-md-10">
@@ -28,7 +30,11 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>用户列表</strong>
-                        <button type="button" class="btn btn-success pull-right user-add-btn" style="margin-top:-8px" data-href="user/add">添加用户</button>
+                        <c:forEach items="${loginUser.auths}" var="auth">
+                            <c:if test="${auth.target=='SYS_USER_ADD'}">
+                                <button type="button" class="btn btn-success pull-right user-add-btn btn-sm" style="margin-top:-6px" data-href="user/add">添加用户</button>
+                            </c:if>
+                        </c:forEach>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -42,7 +48,9 @@
                                 <th>状态</th>
                                 <th>描述</th>
                                 <th>所属部门</th>
-                                <th>操作</th>
+                                <c:if test="${loginUser.auths.size()>0}">
+                                    <th>操作</th>
+                                </c:if>
                             </tr>
                         </thead>
                         <tbody class="user-tbody">
@@ -50,23 +58,35 @@
                                 <c:when test="${users.size()>0}">
                                     <c:forEach items="${users}" var="user">
                                         <c:if test="${user.uname!='admin'}">
-                                            <tr>
-                                                <td>${user.userId}</td>
-                                                <td>${user.uname}</td>
-                                                <td>${user.gender==1?"男":"女"}</td>
-                                                <td>${user.email}</td>
-                                                <td>
-                                                    <span class="label ${user.locked==1?'label-primary':'label-warning'}">${user.locked==1?'解锁':'锁定'}</span>
-                                                    <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
-                                                </td>
-                                                <td>${user.description}</td>
-                                                <td>${user.dept==null?"无":user.dept.dname}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-info btn-xs user-role" data-userid="${user.userId}">分配角色</button>
-                                                    <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
-                                                    <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
-                                                </td>
-                                            </tr>
+                                            <c:if test="${user.userId!=loginUser.user.userId}">
+                                                <tr>
+                                                    <td>${user.userId}</td>
+                                                    <td>${user.uname}</td>
+                                                    <td>${user.gender==1?"男":"女"}</td>
+                                                    <td>${user.email}</td>
+                                                    <td>
+                                                        <span class="label ${user.locked==1?'label-primary':'label-warning'}">${user.locked==1?'解锁':'锁定'}</span>
+                                                        <span class="label ${user.enabled==1?'label-success':'label-danger'}">${user.enabled==1?'启用':'禁用'}</span>
+                                                    </td>
+                                                    <td>${user.description}</td>
+                                                    <td>${user.dept==null?"无":user.dept.dname}</td>
+                                                    <c:if test="${loginUser.auths.size()>0}">
+                                                        <td>
+                                                            <c:forEach items="${loginUser.auths}" var="auth">
+                                                                <c:if test="${auth.target=='SYS_ASSIGN_ROLE'}">
+                                                                    <button type="button" class="btn btn-info btn-xs user-role" data-userid="${user.userId}">分配角色</button>
+                                                                </c:if>
+                                                                <c:if test="${auth.target=='SYS_USER_UPDATE'}">
+                                                                    <button type="button" class="btn btn-warning btn-xs user-edit" data-userid="${user.userId}">修改</button>
+                                                                </c:if>
+                                                                <c:if test="${auth.target=='SYS_USER_DELETE'}">
+                                                                    <button type="button" class="btn btn-danger btn-xs user-delete" data-userid="${user.userId}">删除</button>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                        </td>
+                                                    </c:if>
+                                                </tr>
+                                            </c:if>
                                         </c:if>
                                     </c:forEach>
                                 </c:when>
@@ -79,27 +99,27 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                <%--<div class="panel-footer">--%>
+                    <%--<nav aria-label="Page navigation">--%>
+                        <%--<ul class="pagination">--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Previous">--%>
+                                    <%--<span aria-hidden="true">&laquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                            <%--<li><a href="#">1</a></li>--%>
+                            <%--<li><a href="#">2</a></li>--%>
+                            <%--<li><a href="#">3</a></li>--%>
+                            <%--<li><a href="#">4</a></li>--%>
+                            <%--<li><a href="#">5</a></li>--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Next">--%>
+                                    <%--<span aria-hidden="true">&raquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</nav>--%>
+                <%--</div>--%>
             </div>
         </div>
     </div>
@@ -169,7 +189,7 @@
                             }
                         });
                         if(o.rname!=='admin'){
-                            $("#assign-role").find("form").append("<div class=\"checkbox\"><label><input type=\"checkbox\" name='roleIds' value='"+o.roleId+"' "+(flag?"checked":"")+">" +
+                            $("#assign-role").find("form").append("<div class=\"checkbox\"><label><input type=\"checkbox\" name='roleids' value='"+o.roleId+"' "+(flag?"checked":"")+">" +
                                 o.rname + "</label></div>");
                         }
                     });
@@ -183,18 +203,17 @@
     $(".assign-role-btn").on("click",function(){
         var userId = $(this).data("userid");
         //alert($("#assign-role").find("form").serialize());
-        alert(userId);
+        //alert(userId);
         $.ajax({
-            url:"user/assign/"+userId,
+            url:"user/assign",
             type:"post",
-            data:$("#assign-role").find("form").serialize(),
-            dataType:"json",
+            data:"userId="+userId+"&"+$("#assign-role").find("form").serialize(),
             success:function(res){
-                console.log(res)
+                console.log(res);
                 $("#assign-role").modal("toggle");
             }
         });
-        alert("aaa");
+        //alert("aaa");
     });
 </script>
 </html>

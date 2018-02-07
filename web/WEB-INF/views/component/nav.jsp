@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
@@ -27,29 +28,30 @@
 		
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="system">首页</a></li>
-		        <li><a href="#">关于我们</a></li>
+		        <li class="active"><a href="system"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
+		        <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-eye-open"></span> 关于我们</a></li>
 		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
+		          <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-knight"></span> 更多 <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
-		            <li><a href="#">公司风采</a></li>
-		            <li><a href="#">真难想</a></li>
+		            <li><a href="javascript:void(0)">公司风采</a></li>
+		            <li><a href="javascript:void(0)">......</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="#">不管了</a></li>
+		            <li><a href="javascript:void(0)">......</a></li>
 		          </ul>
 		        </li>
 		      </ul>
 		      
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">帮助文档</a></li>
+		        <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-info-sign"></span> 帮助文档</a></li>
 		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="iconfont icon-yonghutianchong"></span> ${loginUser.uname } <span class="caret"></span></a>
+		          <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="iconfont icon-yonghutianchong"></span> ${loginUser.user.uname } <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
-		            <li><a href="javascript:void(0)"><button class="btn btn-link user-info" style="text-decoration: none">个人信息</button></a></li>
-		            <li><a href="javascript:void(0)"><button class="btn btn-link change-pwd-btn" data-login="${loginUser.userId }" style="text-decoration: none">密码修改</button></a></li>
-		            <li><a href="javascript:void(0)"><button class="btn btn-link authority-get" style="text-decoration: none">权限申请</button></a></li>
+		            <li><a href="javascript:void(0)"><button class="btn btn-link user-info" style="text-decoration: none"><span class="iconfont icon-yonghutianchong"></span> 个人信息</button></a></li>
+		            <li><a href="javascript:void(0)"><button class="btn btn-link update-info-btn" data-login="${loginUser.user.userId }" style="text-decoration: none"><span class="iconfont icon-shurutianchong"></span> 信息修改</button></a></li>
+		            <li><a href="javascript:void(0)"><button class="btn btn-link change-pwd-btn" data-login="${loginUser.user.userId }" style="text-decoration: none"><span class="iconfont icon-kaixintianchong"></span> 密码修改</button></a></li>
+		            <%--<li><a href="javascript:void(0)"><button class="btn btn-link authority-get" style="text-decoration: none">权限申请</button></a></li>--%>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="javascript:void(0)"><button class="btn btn-link security-exit" style="text-decoration: none">安全退出</button></a></li>
+		            <li><a href="javascript:void(0)"><button class="btn btn-link security-exit" style="text-decoration: none"><span class="iconfont icon-cuowutishitianchong"></span> 安全退出</button></a></li>
 		          </ul>
 		        </li>
 		      </ul>
@@ -121,14 +123,35 @@
 
 		<!-- 个人信息模态框 -->
 		<div class="modal fade " id="user-info" tabindex="-1" role="dialog" aria-labelledby="user-info-modal">
-			<div class="modal-dialog" role="document">
+			<div class="modal-dialog modal-sm" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title" id="user-info-modal">个人信息</h4>
 					</div>
 					<div class="modal-body">
-
+						<table class="table table-bordered tabled-hover">
+							<tr>
+								<th>编号</th>
+								<td>${loginUser.user.userId}</td>
+							</tr>
+							<tr>
+								<th>名称</th>
+								<td>${loginUser.user.uname}</td>
+							</tr>
+							<tr>
+								<th>性别</th>
+								<td>${loginUser.user.gender==1?"男":"女"}</td>
+							</tr>
+							<tr>
+								<th>邮箱</th>
+								<td>${loginUser.user.email}</td>
+							</tr>
+							<tr>
+								<th>描述</th>
+								<td>${loginUser.user.description}</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -185,5 +208,9 @@
         $("#repeat-change-pwd").on("focus",function(){
             $(".new-pwd-vali").html("");
         });
+
+        $(".update-info-btn").on("click",function(){
+           location="user/update/"+$(this).data("login");
+		});
 	</script>
 </html>

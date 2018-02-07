@@ -28,7 +28,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>添加部门</strong>
-                        <button type="button" class="btn btn-danger dept-add-cancel pull-right" style="margin-top: -8px">取消</button>
+                        <button type="button" class="btn btn-danger dept-add-cancel pull-right btn-sm" style="margin-top: -6px">取消</button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -83,7 +83,7 @@
 <script src="assets/js/bootstrap.js"></script>
 <script>
     $(".dept-add-cancel").on("click",function () {
-       location="dept";
+        history.go(-1);
     });
 
     $(".dept-submit").on("click",function(){

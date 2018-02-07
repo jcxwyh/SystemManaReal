@@ -20,7 +20,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <jsp:include page="../component/left.jsp"></jsp:include>
+            <jsp:include page="../component/left.jsp">
+                <jsp:param name="user" value="部门管理"></jsp:param>
+            </jsp:include>
         </div>
 
         <div class="col-md-10">
@@ -28,7 +30,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>修改用户</strong>
-                        <button type="button" class="btn btn-danger user-edit-cancel pull-right" style="margin-top: -8px">取消</button>
+                        <button type="button" class="btn btn-danger user-edit-cancel pull-right btn-sm" style="margin-top: -6px">取消</button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -45,18 +47,25 @@
                                     <label for="uname" class="col-sm-2 control-label">用户名</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control"value="${user.uname}" name="uname" id="uname" placeholder="请输入用户名">
+                                        <span class="help-block" style="color:red">${name}<form:errors path="user.uname"></form:errors> </span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="password" class="col-sm-2 control-label">密码</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" name="password" value="${user.password}" id="password" placeholder="请输入密码">
-                                    </div>
-                                </div>
+                                <c:if test="${loginUser.user.uname=='admin'}">
+                                    <c:if test="${user.uname!='admin'}">
+                                        <div class="form-group">
+                                            <label for="password" class="col-sm-2 control-label">密码</label>
+                                            <div class="col-sm-10">
+                                                <input type="password" class="form-control" name="password" value="${user.password}" id="password" placeholder="请输入密码">
+                                                <span class="help-block" style="color:red"><form:errors  path="user.password"></form:errors> </span>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:if>
                                 <div class="form-group">
                                     <label for="email" class="col-sm-2 control-label">邮箱</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" value="${user.email}" name="email" id="email" placeholder="请输入邮箱">
+                                        <span class="help-block" style="color:red">${email}<form:errors path="user.email"></form:errors> </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -134,7 +143,7 @@
 <script src="assets/js/bootstrap.js"></script>
 <script>
     $(".user-edit-cancel").on("click",function () {
-       location="user";
+        history.go(-1);
     });
 
     $(".user-submit").on("click",function(){

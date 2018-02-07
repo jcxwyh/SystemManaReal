@@ -20,7 +20,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <jsp:include page="../component/left.jsp"></jsp:include>
+            <jsp:include page="../component/left.jsp">
+                <jsp:param name="res" value="资源管理"/>
+            </jsp:include>
         </div>
 
         <div class="col-md-10">
@@ -72,28 +74,28 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+                <%--<div class="panel-footer">--%>
+                    <%--<nav aria-label="Page navigation">--%>
+                        <%--<ul class="pagination">--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Previous">--%>
+                                    <%--<span aria-hidden="true">&laquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                            <%--<li><a href="#">1</a></li>--%>
+                            <%--<li><a href="#">2</a></li>--%>
+                            <%--<li><a href="#">3</a></li>--%>
+                            <%--<li><a href="#">4</a></li>--%>
+                            <%--<li><a href="#">5</a></li>--%>
+                            <%--<li>--%>
+                                <%--<a href="#" aria-label="Next">--%>
+                                    <%--<span aria-hidden="true">&raquo;</span>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</nav>--%>
+                <%--</div>--%>
+            <%--</div>--%>
         </div>
     </div>
 </div>

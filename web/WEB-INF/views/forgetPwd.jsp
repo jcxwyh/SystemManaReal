@@ -85,19 +85,19 @@
 												<div class="form-group">
 													<input type="password" class="form-control" id="vali-password" placeholder="请重复输入密码" >
 												</div>
-											  <div class="form-group">
-											    <div>
-											      <button type="button"  class="btn btn-success btn-block edit-btn" >修改</button>
-											    </div>
-											  </div>
+
 												<c:if test="${message != null}">
 													<div class="alert alert-danger alert-dismissible" role="alert" style="border-radius:3em;padding:0.5em 1em">
 														<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin-right:0.8em"><span aria-hidden="true">&times;</span></button>
 															${message}
 													</div>
 												</c:if>
-
 											</form>
+											<div class="form-group">
+												<div>
+													<button type="button"  class="btn btn-success btn-block update-btn" >修改</button>
+												</div>
+											</div>
 										</div>
 									</div>
 							 	 </div>
@@ -115,7 +115,7 @@
 
 		var emailReg = /^.{1,50}@[a-z0-9]{2,8}\.[a-z]{2,3}$/i;
 
-		$(".edit-btn").on("click",function(){
+		$(".update-btn").on("click",function(){
 		   if(!$("#valiCode").val()){
                $(".vali-code").html("请获取验证后重试！")
 		   }else if(!$("#vali-password").val()||!$("#password").val()){

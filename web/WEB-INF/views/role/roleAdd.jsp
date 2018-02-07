@@ -28,7 +28,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <strong>添加角色</strong>
-                        <button type="button" class="btn btn-danger role-add-cancel pull-right" style="margin-top: -8px">取消</button>
+                        <button type="button" class="btn btn-danger role-add-cancel pull-right btn-sm" style="margin-top: -6px">取消</button>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -92,7 +92,7 @@
 <script src="assets/js/bootstrap.js"></script>
 <script>
     $(".role-add-cancel").on("click",function () {
-       location="role";
+        history.go(-1);
     });
 
     $(".role-submit").on("click",function(){
