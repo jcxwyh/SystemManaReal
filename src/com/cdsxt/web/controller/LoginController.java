@@ -30,6 +30,16 @@ public class LoginController {
 		User currentUser = this.loginService.findByName(user.getUname());
 		//用于初始化roles
 		//currentUser.getRoles();
+		if(currentUser.getEnabled()==0){
+			request.setAttribute("message","此账号不可用，请联系管理员！");
+			return "login";
+		}
+		if(currentUser.getLocked()==0){
+			request.setAttribute("message","此账号已锁定，请联系管理员！");
+			return "login";
+		}
+
+
 		if(Objects.nonNull(currentUser) && Objects.equals(currentUser.getPassword(),user.getPassword())){
 			LoginUser loginUser = this.loginService.findAllInfo(currentUser.getUserId());
 			request.getSession().setAttribute("loginUser",loginUser);
