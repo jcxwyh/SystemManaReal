@@ -14,7 +14,7 @@
 		<link rel="stylesheet"  href="//at.alicdn.com/t/font_562947_adwokb7tn2vs4i.css" />
 	</head>
 	<body>
-		<nav class="navbar navbar-default" style="border-radius:0">
+		<nav class="navbar navbar-default navbar-static-top" style="border-radius:0">
 		  <div class="container-fluid">
 		    <div class="navbar-header">
 		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
