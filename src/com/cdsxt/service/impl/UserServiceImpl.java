@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,12 +52,27 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = false,rollbackFor = Throwable.class)
-    public void assignRoles(Integer userId, ArrayList<Integer> roleIds) {
+    public void assignRoles(Integer userId, Integer[] roleIds) {
         this.userDao.assignRoles(userId,roleIds);
     }
 
     @Override
     public User findByEmail(String email) {
         return this.userDao.findByEmail(email);
+    }
+
+    @Override
+    public User findByName(String uname) {
+        return this.userDao.findByName(uname);
+    }
+
+    @Override
+    public List<User> findByNameList(String uname) {
+        return this.userDao.findByNameList(uname);
+    }
+
+    @Override
+    public List<User> findByEmailList(String email) {
+        return this.userDao.findByEmailList(email);
     }
 }

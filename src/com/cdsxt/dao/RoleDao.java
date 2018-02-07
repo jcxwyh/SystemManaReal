@@ -1,5 +1,6 @@
 package com.cdsxt.dao;
 
+import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface RoleDao {
     void update(Role role);
 
     void delete(Integer roleId);
+
+    List<Resource> findResources();
+
+    Resource findResourceById(Integer id);
 }

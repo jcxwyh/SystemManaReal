@@ -28,6 +28,11 @@ public class Role {
 	private Byte enabled;
 	private String description;
 
+	//与部门一对多关系
+	@ManyToOne
+	@JoinColumn(name = "deptno")
+	private Dept dept;
+
 	//与用户多对多
 	@ManyToMany(mappedBy = "roles")
 	private Set<User> users = new HashSet<>();
@@ -40,7 +45,7 @@ public class Role {
 		this.users = users;
 	}
 
-	//与资源多对多
+	//与资源多对多(fetch = FetchType.EAGER)
 	@ManyToMany
 	@JoinTable(name="sys_role_resource",joinColumns = {@JoinColumn(name="roleId")},inverseJoinColumns = {@JoinColumn(name="resId")})
 	private Set<Resource> resources = new HashSet<>();

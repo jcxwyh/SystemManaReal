@@ -1,6 +1,7 @@
 package com.cdsxt.web.controller;
 
 import com.cdsxt.service.LoginService;
+import com.cdsxt.vo.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 	
-	@RequestMapping(value={"","login"},method=RequestMethod.GET)
+	@RequestMapping(value={"/","/login"},method=RequestMethod.GET)
 	public ModelAndView login() {
 		return new ModelAndView("login");
 	}
@@ -27,8 +28,11 @@ public class LoginController {
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	public String login(User user, HttpServletRequest request) {
 		User currentUser = this.loginService.findByName(user.getUname());
+		//用于初始化roles
+		//currentUser.getRoles();
 		if(Objects.nonNull(currentUser) && Objects.equals(currentUser.getPassword(),user.getPassword())){
-			request.getSession().setAttribute("loginUser",currentUser);
+			LoginUser loginUser = this.loginService.findAllInfo(currentUser.getUserId());
+			request.getSession().setAttribute("loginUser",loginUser);
 			return "redirect:/system";
 		}
 		request.setAttribute("message","账户名或密码错误！");

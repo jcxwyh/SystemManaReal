@@ -1,14 +1,12 @@
 package com.cdsxt.web.controller;
 
+import com.cdsxt.util.Authorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +22,7 @@ public class SystemManageController {
 		return "welcome";
 	}
 
+	@Authorize("SYS_COMPANY_QUERY")
 	@RequestMapping("company")
 	public String company(){
 		return "company/company";
@@ -47,44 +46,37 @@ public class SystemManageController {
 			sb.append(characters[(int)Math.random()*characters.length]);
 		}
 
-		String to = email;
+		Properties properties = new Properties();
+		properties.setProperty("mail.debug","true");
+		properties.setProperty("mail.host","smtp.qq.com");
+		properties.setProperty("mail.transport.protocol","smtp");
+		properties.setProperty("mail.smtp.auth","true");
 
-		String from = "1195453895@qq.com";
+		Session session = Session.getInstance(properties);
 
-		String host = "smtp.qq.com";
+		Transport transport = null;
 
-		Properties properties = System.getProperties();
+		try {
+			transport = session.getTransport();
+			transport.connect("smtp.qq.com","1327994105@qq.com","jcxWYH20132014");
 
-		properties.setProperty("mail.smtp.host", host);
+			MimeMessage mimeMessage = new MimeMessage(session);
 
-		Session session = Session.getDefaultInstance(properties);
+			mimeMessage.setFrom(new InternetAddress("1327994105@qq.com"));
+			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email)); // 邮件的收件人
+//			mimeMessage.setRecipient(Message.RecipientType.CC, new InternetAddress(MAIL_CC)); // 邮件的抄送人
+//			mimeMessage.setRecipient(Message.RecipientType.BCC, new InternetAddress(MAIL_BCC)); // 邮件的密送人
 
-		try{
-			// 创建默认的 MimeMessage 对象
-			MimeMessage message = new MimeMessage(session);
+			mimeMessage.setSubject("验证码：");
+			mimeMessage.setText(sb.toString());
 
-			// Set From: 头部头字段
-			message.setFrom(new InternetAddress(from));
-
-			// Set To: 头部头字段
-			message.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(to));
-
-			// Set Subject: 头部头字段
-			message.setSubject("验证码：");
-
-			// 设置消息体
-			message.setText(sb.toString());
-
-			// 发送消息
-			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		}catch (MessagingException mex) {
-			mex.printStackTrace();
+			transport.sendMessage(mimeMessage,mimeMessage.getAllRecipients());
+			transport.close();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
 		}
-
-		System.out.println(sb.toString());
-		request.getServletContext().setAttribute("emailCode",sb.toString());
 
 		return "success";
 	}

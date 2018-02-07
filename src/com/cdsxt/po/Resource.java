@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="sys_resource")
-public class Resource {
+public class Resource implements Comparable<Resource>{
 	@Id
 	@GenericGenerator(name="resourceGen",strategy = "identity")
 	@GeneratedValue(generator = "resourceGen")
@@ -27,8 +27,26 @@ public class Resource {
 	private String title;
 	@Column(unique = true)
 	private String href;
+
 	private String target;
 
+	public Byte getHasChild() {
+		return hasChild;
+	}
+
+	public void setHasChild(Byte hasChild) {
+		this.hasChild = hasChild;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	private Byte hasChild;
 	private Byte shown;
 	private Byte enabled;
 	private Byte type;
@@ -37,6 +55,7 @@ public class Resource {
 	@JoinColumn(name="parent")
 	private Resource resource;
 
+	//(fetch = FetchType.EAGER)
 	@JsonIgnore
 	@OneToMany(mappedBy = "resource")
 	private Set<Resource> resources = new HashSet<>();
@@ -131,5 +150,30 @@ public class Resource {
 		this.resources = resources;
 	}
 	
-	
+	//重写hashCode与equals
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Resource resource = (Resource) o;
+
+		return rname.equals(resource.rname);
+	}
+
+	@Override
+	public int hashCode() {
+		return rname.hashCode();
+	}
+
+	@Override
+	public int compareTo(Resource o) {
+    	if(this.rname.hashCode()<o.rname.hashCode()){
+    		return -1;
+		}else if(this.rname.hashCode()>o.rname.hashCode()){
+    		return 1;
+		}
+		return 0;
+	}
 }

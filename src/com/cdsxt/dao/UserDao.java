@@ -2,7 +2,6 @@ package com.cdsxt.dao;
 
 import com.cdsxt.po.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface UserDao {
@@ -18,7 +17,13 @@ public interface UserDao {
 
     void changePwd(Integer userId, String password);
 
-    void assignRoles(Integer userId, ArrayList<Integer> roleIds);
+    void assignRoles(Integer userId, Integer[] roleIds);
 
     User findByEmail(String email);
+
+    User findByName(String uname);
+
+    List<User> findByNameList(String uname);
+
+    List<User> findByEmailList(String email);
 }

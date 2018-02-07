@@ -1,8 +1,8 @@
 package com.cdsxt.service;
 
+import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface RoleService {
@@ -16,5 +16,7 @@ public interface RoleService {
 
     void delete(Integer roleId);
 
-    void assignResource(Integer roleId, ArrayList<Integer> resId);
+    void assignResource(Integer roleId, Integer[] resId);
+
+    List<Resource> findResources();
 }

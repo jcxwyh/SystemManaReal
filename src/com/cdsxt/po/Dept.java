@@ -30,6 +30,19 @@ public class Dept {
 	private String ddesc;
 	private String cname;
 	private String cdesc;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "dept")
+	private Set<Role> roles = new HashSet<>();
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	//与用户一对多
 	@JsonIgnore
 	@OneToMany(mappedBy = "dept")

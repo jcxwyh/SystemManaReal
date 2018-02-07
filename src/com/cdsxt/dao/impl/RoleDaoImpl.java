@@ -2,6 +2,7 @@ package com.cdsxt.dao.impl;
 
 import com.cdsxt.base.SessionBaseDao;
 import com.cdsxt.dao.RoleDao;
+import com.cdsxt.po.Resource;
 import com.cdsxt.po.Role;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -35,5 +36,15 @@ public class RoleDaoImpl extends SessionBaseDao implements RoleDao{
         Role role = new Role();
         role.setRoleId(roleId);
         this.getSession().delete(role);
+    }
+
+    @Override
+    public List<Resource> findResources() {
+        return this.getSession().createCriteria(Resource.class).list();
+    }
+
+    @Override
+    public Resource findResourceById(Integer id) {
+        return (Resource) this.getSession().get(Resource.class,id);
     }
 }

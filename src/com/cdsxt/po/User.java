@@ -47,6 +47,7 @@ public class User {
 	private Dept dept;
 	//与角色是多对多
 
+	//(fetch = FetchType.EAGER)
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "sys_user_role",joinColumns = {@JoinColumn(name="userId")},inverseJoinColumns = {@JoinColumn(name="roleId")})

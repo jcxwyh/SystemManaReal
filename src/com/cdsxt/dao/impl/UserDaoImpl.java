@@ -5,12 +5,10 @@ import com.cdsxt.dao.UserDao;
 import com.cdsxt.po.Role;
 import com.cdsxt.po.User;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 public class UserDaoImpl extends SessionBaseDao implements UserDao{
@@ -38,7 +36,7 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
 
     @Override
     public void update(User user) {
-        this.getSession().update(user);
+        this.getSession().merge(user);
     }
 
     @Override
@@ -48,13 +46,13 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
     }
 
     @Override
-    public void assignRoles(Integer userId, ArrayList<Integer> roleIds) {
+    public void assignRoles(Integer userId, Integer[] roleIds) {
         Session session = this.getSession();
         User user = (User) session.get(User.class,userId);
         user.setRoles(new HashSet<>());
         Set<Role> roles = user.getRoles();
         for(Integer id:roleIds){
-            System.out.println(id);
+            //System.out.println(id);
             Role role = new Role();
             role.setRoleId(id);
             roles.add(role);
@@ -63,6 +61,31 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
 
     @Override
     public User findByEmail(String email) {
-        return (User) this.getSession().createQuery("from User u where u.email=:email").setParameter("email",email).list().get(0);
+        List<User> users = this.getSession().createQuery("from User u where u.email=:email").setParameter("email",email).list();
+        if(Objects.isNull(users)||users.isEmpty()){
+            return null;
+        }else{
+            return users.get(0);
+        }
+    }
+
+    @Override
+    public User findByName(String uname) {
+        List<User> list = this.getSession().createCriteria(User.class).add(Restrictions.eq("uname",uname)).list();
+        if(Objects.isNull(list)||list.isEmpty()){
+            return null;
+        }else{
+            return list.get(0);
+        }
+    }
+
+    @Override
+    public List<User> findByNameList(String uname) {
+        return this.getSession().createCriteria(User.class).add(Restrictions.eq("uname",uname)).list();
+    }
+
+    @Override
+    public List<User> findByEmailList(String email) {
+        return this.getSession().createCriteria(User.class).add(Restrictions.eq("email",email)).list();
     }
 }

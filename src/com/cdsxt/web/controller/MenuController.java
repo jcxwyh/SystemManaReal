@@ -4,6 +4,7 @@ import com.cdsxt.po.Resource;
 import com.cdsxt.po.User;
 import com.cdsxt.service.MenuService;
 import com.cdsxt.service.UserService;
+import com.cdsxt.util.Authorize;
 import com.cdsxt.vo.MenuZTree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    @Authorize("SYS_MENU_QUERY")
     @RequestMapping(value="",method = RequestMethod.GET)
     public ModelAndView find(ModelAndView modelAndView){
         modelAndView.addObject("menus",this.menuService.find());
@@ -32,23 +34,23 @@ public class MenuController {
         return modelAndView;
     }
 
-    @RequestMapping("getMenus")
-    @ResponseBody
-    public List<Resource> getMenus(){
-        //组合为zTree格式数据返回
-//        List<Resource> resources = this.menuService.find();
-//        List<MenuZTree> menuZTrees = new ArrayList<>();
-//        for(Resource resource:resources){
-//            MenuZTree menuZTree = new MenuZTree();
-//            menuZTree.setPid(resource.getResId());
-//            menuZTree.setId(Objects.isNull(resource.getResource())?0:resource.getResource().getResId());
-//            //menuZTree.setName(Objects.isNull(resource.getResource())?null:resource.getResource().getRname());
-//            menuZTree.setName(resource.getRname());
-//
-//            menuZTrees.add(menuZTree);
-//        }
-//        return menuZTrees;
-        return this.menuService.find();
-    }
+//    @RequestMapping("getMenus")
+//    @ResponseBody
+//    public List<Resource> getMenus(){
+//        //组合为zTree格式数据返回
+////        List<Resource> resources = this.menuService.find();
+////        List<MenuZTree> menuZTrees = new ArrayList<>();
+////        for(Resource resource:resources){
+////            MenuZTree menuZTree = new MenuZTree();
+////            menuZTree.setPid(resource.getResId());
+////            menuZTree.setId(Objects.isNull(resource.getResource())?0:resource.getResource().getResId());
+////            //menuZTree.setName(Objects.isNull(resource.getResource())?null:resource.getResource().getRname());
+////            menuZTree.setName(resource.getRname());
+////
+////            menuZTrees.add(menuZTree);
+////        }
+////        return menuZTrees;
+//        return this.menuService.find();
+//    }
 
 }
