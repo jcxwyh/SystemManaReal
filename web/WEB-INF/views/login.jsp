@@ -22,7 +22,6 @@
 			.panel-body{
 				padding:0;
 				margin-top:4%;
-				
 			}
 			.panel,.panel-body{
 				border-radius:20px;
@@ -71,7 +70,7 @@
 											<form action="login"  method="post">
 											  <div class="form-group has-feedback">
 													<span class="iconfont icon-yonghu form-control-feedback"  style="font-size:16px;"></span>						    	
-											        <input type="text" class="form-control"  name="uname" id="uname" placeholder="请输入用户名"  style="font-size:16px;line-height:1.8em;border-radius:1em;">
+											        <input type="text" class="form-control" value="${param.uname}"  name="uname" id="uname" placeholder="请输入用户名"  style="font-size:16px;line-height:1.8em;border-radius:1em;">
 											  </div>
 											  <div class="form-group has-feedback">
 											    	<span class="iconfont icon-suo form-control-feedback"  style="font-size:16px;"></span>

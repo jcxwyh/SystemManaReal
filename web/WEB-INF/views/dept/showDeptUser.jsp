@@ -4,6 +4,13 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+
+<!--
+    用于显示员工的界面，但是感觉不怎么好使，换到
+
+-->
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +29,7 @@
         <div class="col-md-2">
             <jsp:include page="../component/left.jsp">
                 <jsp:param name="user" value="部门管理"></jsp:param>
-                <jsp:param name="active" value="用户管理"></jsp:param>
+                <jsp:param name="active" value="部门管理"></jsp:param>
             </jsp:include>
         </div>
 
@@ -56,8 +63,8 @@
                         </thead>
                         <tbody class="user-tbody">
                             <c:choose>
-                                <c:when test="${users.size()>0}">
-                                    <c:forEach items="${users}" var="user">
+                                <c:when test="${dept.users.size()>0}">
+                                    <c:forEach items="${dept.users}" var="user">
                                         <c:if test="${user.uname!='admin'}">
                                             <c:if test="${user.userId!=loginUser.user.userId}">
                                                 <tr>

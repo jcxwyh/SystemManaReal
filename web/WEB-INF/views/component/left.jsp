@@ -34,26 +34,45 @@
 			  <%--<a href="role" class="list-group-item">角色管理</a>--%>
 			  <%--<a href="authority" class="list-group-item">权限管理</a>--%>
 			  <!-- 首先遍历用户的角色 -->
-
+			  <!--
+			  	1.遍历menus
+			  	2.如果menu.resource==null则为父菜单，遍历menus寻找其子菜单，找到加加号按钮并显示子菜单
+			  <%--<c:forEach items="${loginUser.menus}" var="childMenu">--%>
+							<%----%>
+						<%--</c:forEach>--%>
+			  -->
 			  <c:forEach items="${loginUser.menus}" var="menu">
 				  <c:if test="${menu.resource==null}">
-			  			<a href="${menu.href==null?'javascript:void(0)':menu.href}"  class="list-group-item">
-							${menu.rname}
-
+			  			<a href="${menu.href==null?'javascript:void(0)':menu.href}"  class="list-group-item ${menu.rname==param.active?'active':''}">
+							<span class="glyphicon glyphicon-th-large"></span> ${menu.rname}
 						</a>
-						<c:if test="${menu.hasChild==1}">
+
+					  	<c:set var="haha" value="0"></c:set>
+					    <c:forEach items="${loginUser.menus}" var="childMenu">
+							<!-- 判断跳出循环 -->
+							<%--成功${menu.rname}-${childMenu.resource.rname}--%>
+							<c:if test="${menu.resources.contains(childMenu)}">
+								<c:set var="haha" value="1"></c:set>
+							</c:if>
+					    </c:forEach>
+					    <c:if test="${haha==1}">
 							<span class="glyphicon glyphicon-plus-sign pull-right" data-parent="${menu.rname}" style="margin:-2em 1em 0 0;z-index: 100"></span>
 						</c:if>
+
+						<%--<c:if test="${menu.hasChild==1}">--%>
+							<%--<span class="glyphicon glyphicon-plus-sign pull-right" data-parent="${menu.rname}" style="margin:-2em 1em 0 0;z-index: 100"></span>--%>
+						<%--</c:if>--%>
 							<%--<c:forEach items="${loginUser.menus}" var="temp">--%>
 								<%--<c:if test="${menu.resId==temp.resource.resId}">--%>
 									<%--<span class="glyphicon glyphicon-plus-sign"></span>--%>
 								<%--</c:if>--%>
 							<%--</c:forEach>--%>
 
-					  <c:forEach items="${menu.resources}" var="res">
-						  <c:if test="${res.type==1}">
-			  					<a href="${res.href==null?'javascript:void(0)':res.href}" data-child="${menu.rname}" class="list-group-item hide">
-									<span class="to-right">${res.rname}</span>
+					  <c:forEach items="${loginUser.menus}" var="childs">
+						  <!--${childs.resource.resId}==${menu.resId}-->
+						  <c:if test="${childs.resource.resId==menu.resId}">
+			  					<a href="${childs.href==null?'javascript:void(0)':childs.href}" data-child="${menu.rname}" class="list-group-item hide ${param.active==childs.rname?'active':''}">
+									<span class="to-right"><span class="glyphicon glyphicon-th-large"></span> ${childs.rname}</span>
 								</a>
 						  </c:if>
 					  </c:forEach>
@@ -139,12 +158,12 @@
                 })
             }
 		});
-		// $(".list-group").on("click","a",function(){
-        //
-		//     $(".list-group").find("a").each(function(){
-		//        $(this).removeClass("active");
-		// 	});
-         //    $(this).addClass("active");
-		// });
+		$(".list-group").on("click","a",function(){
+
+		    $(".list-group").find("a").each(function(){
+		       $(this).removeClass("active");
+			});
+            $(this).addClass("active");
+		});
 	</script>
 </html>

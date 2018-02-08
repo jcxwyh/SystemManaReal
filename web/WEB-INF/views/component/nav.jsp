@@ -47,7 +47,11 @@
 		          <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="iconfont icon-yonghutianchong"></span> ${loginUser.user.uname } <span class="caret"></span></a>
 		          <ul class="dropdown-menu">
 		            <li><a href="javascript:void(0)"><button class="btn btn-link user-info" style="text-decoration: none"><span class="iconfont icon-yonghutianchong"></span> 个人信息</button></a></li>
-		            <li><a href="javascript:void(0)"><button class="btn btn-link update-info-btn" data-login="${loginUser.user.userId }" style="text-decoration: none"><span class="iconfont icon-shurutianchong"></span> 信息修改</button></a></li>
+					<c:forEach items="${loginUser.auths}" var="auth">
+						<c:if test="${auth.target=='SYS_USER_UPDATE'}">
+							<li><a href="javascript:void(0)"><button class="btn btn-link update-info-btn" data-login="${loginUser.user.userId }" style="text-decoration: none"><span class="iconfont icon-shurutianchong"></span> 信息修改</button></a></li>
+						</c:if>
+					</c:forEach>
 		            <li><a href="javascript:void(0)"><button class="btn btn-link change-pwd-btn" data-login="${loginUser.user.userId }" style="text-decoration: none"><span class="iconfont icon-kaixintianchong"></span> 密码修改</button></a></li>
 		            <%--<li><a href="javascript:void(0)"><button class="btn btn-link authority-get" style="text-decoration: none">权限申请</button></a></li>--%>
 		            <li role="separator" class="divider"></li>

@@ -22,6 +22,7 @@
         <div class="col-md-2">
             <jsp:include page="../component/left.jsp">
                 <jsp:param name="user" value="部门管理"></jsp:param>
+                <jsp:param name="active" value="用户管理"></jsp:param>
             </jsp:include>
         </div>
 

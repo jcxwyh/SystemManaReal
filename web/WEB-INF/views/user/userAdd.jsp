@@ -23,6 +23,7 @@
         <div class="col-md-2">
             <jsp:include page="../component/left.jsp">
                 <jsp:param name="user" value="部门管理"></jsp:param>
+                <jsp:param name="active" value="用户管理"></jsp:param>
             </jsp:include>
         </div>
 
@@ -134,6 +135,8 @@
 <script src="assets/js/jquery-1.12.3.js"></script>
 <script src="assets/js/bootstrap.js"></script>
 <script>
+    var emailReg = /^.{1,50}@[a-z0-9]{2,8}\.[a-z]{2,3}$/i;
+
     $(".user-add-cancel").on("click",function () {
        history.go(-1);
     });
@@ -141,8 +144,16 @@
     $(".user-submit").on("click",function(){
         if(!$("#uname").val()){
             alert("名字不能为空")
+        }else if(!$("#password").val()){
+            alert("密码不能为空")
+        }else if(!$("#email").val()){
+            alert("邮箱不能为空")
+        }else if(!emailReg.test($("#email").val())){
+            alert("邮箱格式不正确")
+        }else {
+            $("form").submit();
         }
-       $("form").submit();
+
     });
 
     $(".user-reset").on("click",function(){

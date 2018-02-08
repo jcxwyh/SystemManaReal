@@ -67,20 +67,21 @@
 											<form action="user/forgetPwd" method="post">
 											  <div class="form-group">
 												  <div class="input-group">
-													  <input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱">
+													  <input type="text" class="form-control"  value="${valiMail }" name="email"  id="email" placeholder="请输入邮箱">
 													  <span class="input-group-btn">
 														<button class="btn btn-default get-vali-code" type="button">获取验证码</button>
+														
 													  </span>
 												  </div>
-
+													<span class="help-block vali-mail" style="color:red;margin-left:0.4em"></span>
 											  </div>
 											  <div class="form-group">
 											        <input type="text" class="form-control"  name="valiCode" id="valiCode" placeholder="请输入验证码" >
-												    <span class="help-block vali-code" style="color:red"></span>
+												    <span class="help-block vali-code" style="color:red;margin-left:0.4em"></span>
 											  </div>
 												<div class="form-group">
 													<input type="password" class="form-control"  name="password" id="password" placeholder="请输入密码" >
-													<span class="help-block vali-pwd" style="color:red"></span>
+													<span class="help-block vali-pwd " style="color:red ;margin-left:0.4em"></span>
 												</div>
 												<div class="form-group">
 													<input type="password" class="form-control" id="vali-password" placeholder="请重复输入密码" >
@@ -141,20 +142,43 @@
 
 		$(".get-vali-code").on("click",function(){
 		   if(!$("#email").val()){
-		       $(".vali-code").html("请输入邮箱！");
+		       $(".vali-mail").html("请输入邮箱！");
 		   }else if(!emailReg.test($("#email").val())){
-               $(".vali-code").html("邮箱格式不正确！");
+               $(".vali-mail").html("邮箱格式不正确！");
 		   }else{
-		       $.ajax({
+			   
+			   $.ajax({
 				   url:"system/getEmailCode",
 				   data:"email="+$("#email").val(),
 				   type:"post",
-				   async:false,
-				   success:function(){
-				       alert("获取成功！请输入验证码！");
+				   success:function(res){
+				       console.log(res);
 				   }
-			   });
+				});
+			   
+		       //alert("获取成功！请输入验证码！");
+			   $(".get-vali-code").prop("disabled",true);
+			   getTime(30);
 		   }
+		});
+		
+		//循环改变html
+		function getTime(i){
+			$(".get-vali-code").html(i+"秒后重试");
+			 setTimeout(function(){
+				   //i=--i;
+				   if(i>1){
+					   getTime(--i);
+				   }else{
+					   $(".get-vali-code").html("获取验证码");
+					   $(".get-vali-code").prop("disabled",false);
+					   return;
+				   }
+			 },1000);
+		}
+		
+		$("#email").on("focus",function(){
+			$(".vali-mail").html("");
 		});
 	</script>
 </html>

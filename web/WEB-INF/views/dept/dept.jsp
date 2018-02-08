@@ -20,7 +20,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <jsp:include page="../component/left.jsp"></jsp:include>
+            <jsp:include page="../component/left.jsp">
+                <jsp:param name="active" value="部门管理"></jsp:param>
+            </jsp:include>
         </div>
 
         <div class="col-md-10">
@@ -56,7 +58,7 @@
                                     <c:forEach items="${depts}" var="dept">
                                         <tr>
                                             <td>${dept.deptno}</td>
-                                            <td><button class="btn btn-xs btn-link show-emp">${dept.dname}</button></td>
+                                            <td><button class="btn btn-xs btn-link show-emp"  data-deptno="${dept.deptno }">${dept.dname}</button></td>
                                             <td>${dept.ddesc}</td>
                                             <td>${dept.cname}</td>
                                             <td>${dept.cdesc}</td>
@@ -129,6 +131,38 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="show-emp-model" tabindex="-1" role="dialog" aria-labelledby="show-dept-emp">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="show-dept-emp">待填充部门名</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>员工编号</th>
+                            <th>员工姓名</th>
+                            <th>性别</th>
+                            <th>邮箱</th>
+                            <th>描述</th>
+                        </tr>
+                    </thead>
+                    <tbody class="emp-tbody">
+
+                    </tbody>
+                </table>
+            </div>
+            <%--<div class="modal-footer">--%>
+                <%--<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>--%>
+                <%--<button type="button" class="btn btn-primary del-confirm" data-deptno="0">确认删除</button>--%>
+            <%--</div>--%>
+        </div>
+    </div>
+</div>
+
 <jsp:include page="../component/footer.jsp"></jsp:include>
 </body>
 <script src="assets/js/jquery-1.12.3.js"></script>
@@ -153,7 +187,7 @@
             type:"post",
             //async:false,
             success:function(res){
-                console.log(res);
+                //console.log(res);
                 $("#del-dept-model").modal("toggle");
                 $("#del-dept-model .modal-body").empty();
                 // console.log($(".del-confirm"));
@@ -171,6 +205,30 @@
         //alert("dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val());
         //console.log($(this).data("deptno"))
         location="dept/delete/"+$(this).data("deptno")+"/"+$("#del-dept-model .modal-body input[type=radio]:checked").val();
+    });
+    
+    $(".dept-tbody").on("click",".show-emp",function(){
+        var deptno = $(this).data("deptno");
+        var dname=$(this).html();
+        $(".emp-tbody").empty();
+        $.ajax({
+            url:"dept/showEmp/"+deptno,
+            dataType:"json",
+            success:function(res){
+                $("#show-dept-emp").html(dname);
+                $("#show-emp-model").modal("toggle")
+                if($.type(res)==="array"&&res.length){
+                    $.each(res,function(i,o){
+                        $(".emp-tbody").append("<tr><td>"+o.userId+"</td><td>"+o.uname+"</td><td>"+(o.gender==1?"男":"女")+"</td><td>"+o.email+"</td><td>"+o.description+"</td></tr>");
+                    });
+                }else{
+                    $(".emp-tbody").append("<tr><td>暂无员工</td><tr>");
+                }
+            },
+            error:function(){
+                alert("没有权限");
+            }
+        })
     });
 </script>
 </html>

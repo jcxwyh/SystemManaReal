@@ -20,7 +20,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <jsp:include page="../component/left.jsp"></jsp:include>
+            <jsp:include page="../component/left.jsp">
+                <jsp:param name="active" value="部门管理"></jsp:param>
+            </jsp:include>
         </div>
 
         <div class="col-md-10">

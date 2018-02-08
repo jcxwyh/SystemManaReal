@@ -22,6 +22,7 @@
         <div class="col-md-2">
             <jsp:include page="../component/left.jsp">
                 <jsp:param name="res" value="资源管理"/>
+                <jsp:param name="active" value="权限管理"></jsp:param>
             </jsp:include>
         </div>
 
