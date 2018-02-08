@@ -2,6 +2,7 @@ package com.cdsxt.service.impl;
 
 import com.cdsxt.dao.DeptDao;
 import com.cdsxt.po.Dept;
+import com.cdsxt.po.User;
 import com.cdsxt.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,10 @@ public class DeptServiceImpl implements DeptService{
     @Override
     public List<Dept> deptList() {
         return this.deptDao.deptList();
+    }
+
+    @Override
+    public List<User> findEmps(Integer deptno) {
+        return this.deptDao.findEmps(deptno);
     }
 }

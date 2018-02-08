@@ -26,4 +26,6 @@ public interface UserService {
     List<User> findByNameList(String uname);
 
     List<User> findByEmailList(String email);
+
+    boolean valiEmail(String email);
 }

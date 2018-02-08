@@ -34,11 +34,17 @@ public class LoginServiceImpl implements LoginService{
 
         Set<Resource> menus = new HashSet<>();
         Set<Resource> auths = new HashSet<>();
-
+        /*
+            1：查出role下所有资源，分为菜单和资源
+            2：菜单需要查出其父菜单，而不需要查出其子菜单
+         */
         for(Role role:roles){
             Set<Resource> res = role.getResources();
+
             for(Resource re : res){
-                if(re.getType()==1){
+                if(Objects.nonNull(re)){
+                    re.toString();
+                    if(re.getType()==1){
                     Resource resource = re.getResource();
                     if(Objects.nonNull(resource)){
                         resource.toString();
@@ -51,10 +57,13 @@ public class LoginServiceImpl implements LoginService{
                     }else{
                         resources=null;
                     }
-                    menus.add(re);
-                }else if(re.getType()==0){
-                    auths.add(re);
+
+                        menus.add(re);
+                    }else if(re.getType()==0){
+                        auths.add(re);
+                    }
                 }
+
             }
         }
 

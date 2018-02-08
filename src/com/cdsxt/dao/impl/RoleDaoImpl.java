@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public class RoleDaoImpl extends SessionBaseDao implements RoleDao{
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Role> find() {
         return this.getSession().createCriteria(Role.class).list();
     }
@@ -38,7 +39,8 @@ public class RoleDaoImpl extends SessionBaseDao implements RoleDao{
         this.getSession().delete(role);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Resource> findResources() {
         return this.getSession().createCriteria(Resource.class).list();
     }

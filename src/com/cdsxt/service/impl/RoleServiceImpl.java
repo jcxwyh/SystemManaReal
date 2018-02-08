@@ -54,7 +54,9 @@ public class RoleServiceImpl implements RoleService{
         role.setResources(new HashSet<>());
         Set<Resource> resources = role.getResources();
         for(Integer id:resId){
-            resources.add(this.roleDao.findResourceById(id));
+        	if(id!=0) {
+        		resources.add(this.roleDao.findResourceById(id));
+        	}
         }
         //this.roleDao.update(role);
     }

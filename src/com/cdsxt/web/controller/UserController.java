@@ -55,6 +55,9 @@ public class UserController {
 //            this.userService.add(user);
 //            return "redirect:/user";
 //        }
+        if(user.getDept().getDeptno()==0){
+            user.setDept(null);
+        }
         User nameUser = this.userService.findByName(user.getUname());
         User emailUser = this.userService.findByEmail(user.getEmail());
         if(Objects.nonNull(nameUser)&&Objects.equals(nameUser.getUname(),user.getUname())){
@@ -157,23 +160,55 @@ public class UserController {
     @RequestMapping("/forgetPwd")
     public String forgetPwd(@RequestParam("email") String email, @RequestParam("valiCode") String valiCode, @RequestParam("password") String password, HttpServletRequest request, RedirectAttributes attributes){
         Object currentCode = request.getServletContext().getAttribute("emailCode");
+        Object currentEmail = request.getServletContext().getAttribute("valiEmail");
         if(Objects.isNull(email)||email.length()<1){
+        	attributes.addFlashAttribute("vailMail",email);
             attributes.addFlashAttribute("message","邮箱不正确！");
             return "redirect:/system/forgetP";
         }
+        
         User user = this.userService.findByEmail(email);
-
-        if(Objects.isNull(currentCode) || !(currentCode instanceof String)||((String) currentCode).length()<1||!Objects.equals(valiCode,currentCode)){
-            //request.setAttribute();
-            attributes.addFlashAttribute("message","验证码错误！");
+        
+        //判断用户的真实性
+        if(Objects.isNull(user)) {
+        	attributes.addFlashAttribute("vailMail",email);
+        	attributes.addFlashAttribute("message","用户不存在！请确认邮箱！");
             return "redirect:/system/forgetP";
-        }else if(!Objects.equals(user.getEmail(),email)){
-            //request.setAttribute("message","邮箱不正确！");
+        }
+        
+        //判断容器中是否存在email，不存在返回重新获取验证码
+        if(Objects.isNull(currentEmail)||!(currentEmail instanceof String)) {
+        	attributes.addFlashAttribute("message","请重新获取验证码！");
+            return "redirect:/system/forgetP";
+        }
+        //比较获取验证码的邮箱和提交修改的邮箱一致否
+        if(!Objects.equals(email, currentEmail)) {
+        	attributes.addFlashAttribute("vailMail",email);
+        	attributes.addFlashAttribute("message","请确认获取验证码的是此邮箱！建议重新获取！");
+            return "redirect:/system/forgetP";
+        }
+        //查看容器内的验证码是否有效
+        if(Objects.isNull(currentCode) || !(currentCode instanceof String)||((String) currentCode).length()<1){
+            //request.setAttribute();
+            attributes.addFlashAttribute("message","验证码已失效！请重新获取！");
+            return "redirect:/system/forgetP";
+        }
+        //验证验证码是否匹配
+        if(!Objects.equals(valiCode,currentCode)) {
+        	attributes.addFlashAttribute("message","验证码错误！请重新输入！");
+            return "redirect:/system/forgetP";
+        }
+        
+        if(!Objects.equals(user.getEmail(),email)){
+        	attributes.addFlashAttribute("vailMail",email);
             attributes.addFlashAttribute("message","邮箱不正确！");
-            return "redirect:/system/forgetPwd";
+            return "redirect:/system/forgetP";
         }else{
             user.setPassword(password);
             this.userService.update(user);
+            attributes.addFlashAttribute("message","密码重置成功！请重新登录！");
+            request.getServletContext().removeAttribute("emailCode");
+            request.getServletContext().removeAttribute("valiEmail");
             return "redirect:/login";
         }
     }

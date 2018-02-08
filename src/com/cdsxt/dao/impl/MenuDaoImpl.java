@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public class MenuDaoImpl extends SessionBaseDao implements MenuDao {
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Resource> find() {
         return this.getSession().createCriteria(Resource.class).add(Restrictions.eq("type",(byte)1)).list();
     }

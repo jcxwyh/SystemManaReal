@@ -81,7 +81,7 @@ public class RoleController {
 
     @Authorize("SYS_ASSIGN_RESOURCE")
     @RequestMapping(value="assignResource/{roleId}",method=RequestMethod.POST)
-    public String assignResource(@PathVariable("roleId") Integer roleId, @RequestParam("resList") Integer[] resList){
+    public String assignResource(@PathVariable("roleId") Integer roleId, @RequestParam(value="resList",defaultValue="0") Integer[] resList){
         this.roleService.assignResource(roleId,resList);
         return "redirect:/role";
     }

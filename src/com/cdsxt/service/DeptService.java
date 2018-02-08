@@ -1,6 +1,7 @@
 package com.cdsxt.service;
 
 import com.cdsxt.po.Dept;
+import com.cdsxt.po.User;
 
 import java.util.List;
 
@@ -13,7 +14,9 @@ public interface DeptService {
 
     void update(Dept dept);
 
-    void delete(Integer deptno,Integer mode);
+    void delete(Integer deptno, Integer mode);
 
     List<Dept> deptList();
+
+    List<User> findEmps(Integer deptno);
 }

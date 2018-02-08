@@ -30,6 +30,11 @@ public class LoginController {
 		User currentUser = this.loginService.findByName(user.getUname());
 		//用于初始化roles
 		//currentUser.getRoles();
+		if(Objects.isNull(currentUser)){
+			request.setAttribute("message","请核对用户名后再播！");
+			return "login";
+		}
+
 		if(currentUser.getEnabled()==0){
 			request.setAttribute("message","此账号不可用，请联系管理员！");
 			return "login";
@@ -40,9 +45,11 @@ public class LoginController {
 		}
 
 
-		if(Objects.nonNull(currentUser) && Objects.equals(currentUser.getPassword(),user.getPassword())){
+		if(Objects.equals(currentUser.getPassword(),user.getPassword())){
 			LoginUser loginUser = this.loginService.findAllInfo(currentUser.getUserId());
 			request.getSession().setAttribute("loginUser",loginUser);
+			request.getServletContext().removeAttribute("emailCode");
+			request.getServletContext().removeAttribute("valiEmail");
 			return "redirect:/system";
 		}
 		request.setAttribute("message","账户名或密码错误！");

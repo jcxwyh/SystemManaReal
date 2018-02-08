@@ -12,7 +12,8 @@ import java.util.*;
 
 @Repository
 public class UserDaoImpl extends SessionBaseDao implements UserDao{
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<User> find() {
         return this.getSession().createQuery("from User u").list();
     }
@@ -59,7 +60,8 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public User findByEmail(String email) {
         List<User> users = this.getSession().createQuery("from User u where u.email=:email").setParameter("email",email).list();
         if(Objects.isNull(users)||users.isEmpty()){
@@ -69,7 +71,8 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public User findByName(String uname) {
         List<User> list = this.getSession().createCriteria(User.class).add(Restrictions.eq("uname",uname)).list();
         if(Objects.isNull(list)||list.isEmpty()){
@@ -79,13 +82,25 @@ public class UserDaoImpl extends SessionBaseDao implements UserDao{
         }
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<User> findByNameList(String uname) {
         return this.getSession().createCriteria(User.class).add(Restrictions.eq("uname",uname)).list();
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<User> findByEmailList(String email) {
         return this.getSession().createCriteria(User.class).add(Restrictions.eq("email",email)).list();
+    }
+
+    /**
+     * 验证邮箱是否存在
+     * @param email
+     * @return
+     */
+    @Override
+    public boolean valiEmail(String email) {
+        return this.getSession().createCriteria(User.class).add(Restrictions.eq("email",email)).list().size()>0;
     }
 }

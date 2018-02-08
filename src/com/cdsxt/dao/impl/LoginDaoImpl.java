@@ -2,12 +2,10 @@ package com.cdsxt.dao.impl;
 
 import com.cdsxt.base.SessionBaseDao;
 import com.cdsxt.dao.LoginDao;
-import com.cdsxt.po.Resource;
 import com.cdsxt.po.User;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
 
 @Repository
 public class LoginDaoImpl extends SessionBaseDao implements LoginDao{

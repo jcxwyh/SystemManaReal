@@ -75,4 +75,14 @@ public class UserServiceImpl implements UserService{
     public List<User> findByEmailList(String email) {
         return this.userDao.findByEmailList(email);
     }
+
+    /**
+     * 用于验证邮箱是否存在
+     * @param email
+     * @return
+     */
+    @Override
+    public boolean valiEmail(String email) {
+        return this.userDao.valiEmail(email);
+    }
 }

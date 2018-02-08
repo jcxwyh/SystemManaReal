@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public class AuthorityDaoImpl extends SessionBaseDao implements AuthorityDao {
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public List<Resource> find() {
         return this.getSession().createCriteria(Resource.class).add(Restrictions.eq("type",(byte)0)).list();
     }

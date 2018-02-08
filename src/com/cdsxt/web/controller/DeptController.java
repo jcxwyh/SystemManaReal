@@ -1,6 +1,7 @@
 package com.cdsxt.web.controller;
 
 import com.cdsxt.po.Dept;
+import com.cdsxt.po.User;
 import com.cdsxt.service.DeptService;
 import com.cdsxt.util.Authorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,18 @@ public class DeptController {
     public Boolean valiUser(@RequestParam("deptno") Integer deptno){
         Dept dept = this.deptService.findOne(deptno);
         return dept.getUers()==null?false:dept.getUers().isEmpty()?false:true;
+    }
+    
+    /**
+     *	显示部门中员工信息 
+     * @param deptno
+     * @param
+     * @return
+     */
+    @Authorize("SYS_USER_QUERY")
+    @RequestMapping("showEmp/{deptno}")
+    @ResponseBody
+    public List<User> showEmp(@PathVariable("deptno") Integer deptno) {
+    	return this.deptService.findEmps(deptno);
     }
 }

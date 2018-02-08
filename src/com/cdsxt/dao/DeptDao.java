@@ -1,6 +1,7 @@
 package com.cdsxt.dao;
 
 import com.cdsxt.po.Dept;
+import com.cdsxt.po.User;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface DeptDao {
     List<Dept> deptList();
 
     void deleteAll(Integer deptno);
+
+    List<User> findEmps(Integer deptno);
 }
